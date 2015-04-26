@@ -15,8 +15,6 @@ module.exports = {
   'Try to login into with correct credentials' : function (client) {
     return client.page.auth
       .login(client.globals.credentials.CORRECT_LOGIN, client.globals.credentials.CORRECT_PASSWORD)
-      .pause(client.globals.timeouts.WAIT_FOR_CONDITIONAL_TIMEOUT)
-      .url(client.globals.urls.APPLICATION_URL)
       .assert.urlContains(client.globals.urls.APPLICATION_URL)
     ;
   },

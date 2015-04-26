@@ -15,6 +15,8 @@ module.exports = {
       .setValue('.password input[type=password]', password)
       .moveToElement('.btn', 10, 10)
       .click('.btn')
+      .pause(1000)
+      .waitForElementNotPresent('.spinner')
   },
 };
 
