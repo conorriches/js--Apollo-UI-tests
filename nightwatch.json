@@ -13,7 +13,7 @@
     "port" : 4444,
     "cli_args" : {
       "webdriver.chrome.driver" : "node_modules/chromedriver/bin/chromedriver",
-      "phantomjs.cli.args" : "--web-security=false --ignore-ssl-errors=true --load-images=false --local-to-remote-url-access=true"
+      "phantomjs.cli.args" : "--web-security=false --ignore-ssl-errors=true --load-images=true --local-to-remote-url-access=true --debug=true"
     }
   },
   "test_settings" : {
@@ -24,13 +24,13 @@
       "silent": true,
       "screenshots": {
         "enabled": false,
-        "path": "screenshots"
+        "path": "results/screenshots"
       },
       "desiredCapabilities" : {
         "browserName" : "phantomjs",
         "javascriptEnabled" : true,
         "acceptSslCerts" : true,
-        "phantomjs.binary.path" : "bin/osx/phantomjs",
+        "phantomjs.binary.path" : "./bin/osx/phantomjs",
         "chromeOptions": {
           "debuggerAddress":  "127.0.0.1:38947"
         }

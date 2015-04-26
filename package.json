@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "chromedriver": "^2.15.0",
-    "nightwatch": "^0.6.0",
+    "nightwatch": "^0.6.5",
     "nightwatch-pages": "*",
     "selenium-server-standalone-jar": "^2.45.0"
   }

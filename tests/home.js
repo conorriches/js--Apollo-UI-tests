@@ -3,8 +3,9 @@ var path = require('path');
 module.exports = {
   tags: ['home'],
 
-  'Try to create object': function(client) {
-    var objectName = 'Object #' + Date.now();
+  'Try to create object and them search it': function(client) {
+    var searchStr = '#' + Date.now();
+    var objectName = 'Object ' + searchStr;
 
     return client
       .page.home.load()
@@ -15,8 +16,12 @@ module.exports = {
       .assert.urlContains('description')
       .assert.elementPresent('.info-block-text h2 i')
       .assert.containsText('.info-block-text h2 i', objectName)
-      .page.home.searchObject(objectName)
-      .pause(30000)
+      .page.home.searchObject(searchStr)
+      .useXpath()
+      .isVisible('//h2[text()="' + objectName + '"]', function(result) {
+        this.assert.equal(result.value, true);
+      })
+    ;
   },
 
   before: function(client) {

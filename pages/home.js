@@ -31,12 +31,13 @@ module.exports = {
   },
 
   searchObject: function(objectName) {
-    var enter = this.client.keys.ENTER;
+    var enter = ['\uE006'];
+
     return this.client
       .moveToElement('#sidebar input.search', 10, 10)
-      .setValue('#sidebar input.search', objectName)
+      .setValue('#sidebar input.search', objectName + '\n')
       .pause(500)
-      .keys([enter])
+      .keys(enter)
       .pause(500)
       .waitForElementNotPresent('.spinner')
     ;
