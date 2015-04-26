@@ -41,5 +41,31 @@ module.exports = {
       .pause(500)
       .waitForElementNotPresent('.spinner')
     ;
+  },
+
+  createSection: function(sectionName) {
+    return this.client
+      .click('.top-section-home .pull-right .btn:first-of-type')
+      .assert.elementPresent('.modal-content')
+      .click('.modal-body input[name=name]')
+      .setValue('.modal-body input[name=name]', sectionName)
+      .click('.modal-footer .btn-primary')
+      .waitForElementNotPresent('.spinner')
+    ;
+  },
+
+  createGroup: function(groupName, groupDescription) {
+    groupDescription = groupDescription || '';
+
+    return this.client
+      .click('.top-section-home .pull-right .btn:nth-child(2)')
+      .assert.elementPresent('.modal-content')
+      .click('.modal-body input[name=name]')
+      .setValue('.modal-body input[name=name]', groupName)
+      .click('.modal-body input[name=description]')
+      .setValue('.modal-body input[name=description]', groupDescription)
+      .click('.modal-footer .btn-primary')
+      .waitForElementNotPresent('.spinner')
+      ;
   }
 }

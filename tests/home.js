@@ -21,7 +21,35 @@ module.exports = {
       .isVisible('//h2[text()="' + objectName + '"]', function(result) {
         this.assert.equal(result.value, true);
       })
+      .useCss()
     ;
+  },
+
+  'Try to add section': function(client) {
+    var sectionName = 'Section #' + Date.now();
+    return client
+      .page.home.load()
+      .page.home.createSection(sectionName)
+      .useXpath()
+      .isVisible('//h2[text() = "' + sectionName + '"]', function(result) {
+        this.assert.equal(result.value, true);
+      })
+      .useCss()
+      ;
+  },
+
+
+  'Try to add group': function(client) {
+    var groupName = 'Group #' + Date.now();
+    return client
+      .page.home.load()
+      .page.home.createGroup(groupName)
+      .useXpath()
+      .isVisible('//h4[text() = "' + groupName + '"]', function(result) {
+        this.assert.equal(result.value, true);
+      })
+      .useCss() //todo: create command to wrap xpath commands
+      ;
   },
 
   before: function(client) {
