@@ -1,0 +1,15 @@
+{
+  "name": "apollo-ui-tests",
+  "version": "0.0.0",
+  "author": "Vasil Vanchuk",
+  "license": "MIT",
+  "scripts": {
+    "test": "./node_modules/.bin/nightwatch -c ./Nightwatch.js --env default"
+  },
+  "dependencies": {
+    "chromedriver": "^2.15.0",
+    "nightwatch": "^0.6.0",
+    "nightwatch-pages": "*",
+    "selenium-server-standalone-jar": "^2.45.0"
+  }
+}
