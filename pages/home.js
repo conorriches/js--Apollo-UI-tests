@@ -61,11 +61,7 @@ module.exports = {
       .setValue('.modal-body input[name=name]', sectionName)
       .click('.modal-footer .btn-primary')
       .waitForElementNotPresent('.spinner')
-      .useXpath()
-      .isVisible('//h2[text() = "' + sectionName + '"]', function(result) {
-        this.assert.equal(result.value, true, 'Element for created section "' + sectionName + '" was found at page');
-      })
-      .useCss()
+      .assert.jqueryExists('h2:contains("' + sectionName + '"):visible')
     ;
   },
 
@@ -82,11 +78,7 @@ module.exports = {
       .setValue('.modal-body input[name=description]', groupDescription)
       .click('.modal-footer .btn-primary')
       .waitForElementNotPresent('.spinner')
-      .useXpath()
-      .isVisible('//h4[text() = "' + groupName + '"]', function(result) {
-        this.assert.equal(result.value, true, 'Element for "'+ groupName +'" was not found');
-      })
-      .useCss()
+      .assert.jqueryExists('h4:contains("' + groupName + '"):visible')
       ;
   },
 
@@ -104,9 +96,7 @@ module.exports = {
       })
       .jqueryClick(jqSelector)
       .acceptAlert()
-      .jqueryElement(jqSelector, function(el) { // todo: create assertation for jquery selector
-        this.assert.equal(el, null, 'Element for section "' + sectionName + '" was not found at page');
-      })
+      .assert.jqueryExists('!' + jqSelector)
     ;
   },
 
