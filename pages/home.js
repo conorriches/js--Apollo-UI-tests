@@ -9,8 +9,11 @@ module.exports = {
       .url(function(currentUrl) {
         if(currentUrl.value !== client.globals.urls.HOME_URL) {
           return client
+            .cLog('HomePage.load()')
             .url(client.globals.urls.HOME_URL)
             .waitForElementNotPresent('.spinner');
+        } else {
+          client.cLog('HomePage already at home page')
         }
       })
     ;
@@ -18,6 +21,7 @@ module.exports = {
 
   createObject: function(objectName) {
     return this.client
+      .cLog('HomePage.createObject(' + objectName + ')')
       .moveToElement(SELECTOR_ADD_OBJECT_BTN, 10, 10)
       .click(SELECTOR_ADD_OBJECT_BTN)
       .assert.elementPresent('.modal-title', 'Should show modal')
@@ -40,6 +44,7 @@ module.exports = {
     var enter = ['\uE006'];
 
     return this.client
+      .cLog('HomePage.searchObject(' + objectName + ')')
       .moveToElement('#sidebar input.search', 10, 10)
       .setValue('#sidebar input.search', objectName + '\n')
       .pause(500)
@@ -51,6 +56,7 @@ module.exports = {
 
   createSection: function(sectionName) {
     return this.client
+      .cLog('HomePage.createSection(' + sectionName + ')')
       .click('.top-section-home .pull-right .btn:first-of-type')
       .assert.elementPresent('.modal-content', "Should open modal")
       .click('.modal-body input[name=name]')
@@ -69,6 +75,7 @@ module.exports = {
     groupDescription = groupDescription || '';
 
     return this.client
+      .cLog('HomePage.createGroup(' + groupName + ')')
       .click('.top-section-home .pull-right .btn:nth-child(2)')
       .assert.elementPresent('.modal-content', "Should open modal")
       .click('.modal-body input[name=name]')
@@ -90,6 +97,7 @@ module.exports = {
     var client = this.client;
 
     return this.client
+      .cLog('HomePage.removeSection(' + sectionName + ')')
       .execute(function() {
         // patch for phaantomjs
         // todo: create compatibility file
@@ -109,6 +117,7 @@ module.exports = {
     var client = this.client;
 
     return this.client
+      .cLog('HomePage.removeGroup(' + groupName + ')')
       .jqueryClick(jqSelector)
       .waitForElementNotPresent('.spinner')
       .waitForElementPresent('.top-section .btn')

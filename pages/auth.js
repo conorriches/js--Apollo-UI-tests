@@ -3,6 +3,7 @@ module.exports = {
     var client = this.client;
 
     return this.client
+      .cLog('AuthPage.login(' + username + ', ' + password + ')')
       .url(client.globals.urls.SIGN_IN_URL, function() {
         client.deleteCookies();
       })
