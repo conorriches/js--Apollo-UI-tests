@@ -25,16 +25,21 @@ module.exports = {
     ;
   },
 
-  'Try to add section': function(client) {
+  'Try to add/remove section': function(client) {
     var sectionName = 'Section #' + Date.now();
     return client
       .page.home.load()
       .page.home.createSection(sectionName)
       .useXpath()
       .isVisible('//h2[text() = "' + sectionName + '"]', function(result) {
-        this.assert.equal(result.value, true);
+        this.assert.equal(result.value, true, 'Element for created section was found at page');
       })
       .useCss()
+      .page.home.removeSection(sectionName)
+      .useXpath()
+      .jqueryElement('h3.some_strinage_class', function(el) {
+        this.assert.equal(el, null, 'Element for created section was not found at page');
+      })
       ;
   },
 
