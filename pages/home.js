@@ -32,9 +32,7 @@ module.exports = {
       .click(SELECTOR_MODAL_SUBMIT_BTN)
       .waitForElementNotPresent('.spinner')
       .waitForElementPresent('.info-block-text h2 i')
-      // todo: add urlMatch assertion
-      .assert.urlContains('objects/object', "Should be redirected into object page")
-      .assert.urlContains('description')
+      .assert.urlMatch(/objects\/object\/\d+\/description/, "Should be redirected into object page")
       .assert.elementPresent('.info-block-text h2 i')
       .assert.containsText('.info-block-text h2 i', objectName, 'Element for object "' + objectName + '" was found')
     ;
