@@ -67,5 +67,12 @@ module.exports = {
       .click('.modal-footer .btn-primary')
       .waitForElementNotPresent('.spinner')
       ;
+  },
+
+  removeSection: function(sectionName) {
+    var jqSelector = 'h2:contains("' + sectionName + '") + .btn-wrap .btn:contains("Delete Section")';
+    return this.client
+      .jqueryClick(jqSelector)
+      .acceptAlert();
   }
 }
