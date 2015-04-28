@@ -7,9 +7,9 @@ module.exports = {
     var client = this.client;
     return this.client
       .url(function(currentUrl) {
-        if(currentUrl !== client.globals.urls.APPLICATION_URL) {
+        if(currentUrl.value !== client.globals.urls.HOME_URL) {
           return client
-            .url(client.globals.urls.APPLICATION_URL)
+            .url(client.globals.urls.HOME_URL)
             .waitForElementNotPresent('.spinner');
         }
       })
@@ -27,6 +27,12 @@ module.exports = {
       .moveToElement(SELECTOR_MODAL_SUBMIT_BTN, 10, 10)
       .click(SELECTOR_MODAL_SUBMIT_BTN)
       .waitForElementNotPresent('.spinner')
+      .waitForElementPresent('.info-block-text h2 i')
+      // todo: add urlMatch assertion
+      .assert.urlContains('objects/object')
+      .assert.urlContains('description')
+      .assert.elementPresent('.info-block-text h2 i')
+      .assert.containsText('.info-block-text h2 i', objectName, 'Element for object "' + objectName + '" was found')
     ;
   },
 
@@ -51,6 +57,11 @@ module.exports = {
       .setValue('.modal-body input[name=name]', sectionName)
       .click('.modal-footer .btn-primary')
       .waitForElementNotPresent('.spinner')
+      .useXpath()
+      .isVisible('//h2[text() = "' + sectionName + '"]', function(result) {
+        this.assert.equal(result.value, true, 'Element for created section "' + sectionName + '" was found at page');
+      })
+      .useCss()
     ;
   },
 
@@ -66,13 +77,59 @@ module.exports = {
       .setValue('.modal-body input[name=description]', groupDescription)
       .click('.modal-footer .btn-primary')
       .waitForElementNotPresent('.spinner')
+      .useXpath()
+      .isVisible('//h4[text() = "' + groupName + '"]', function(result) {
+        this.assert.equal(result.value, true, 'Element for "'+ groupName +'" was not found');
+      })
+      .useCss()
       ;
   },
 
   removeSection: function(sectionName) {
     var jqSelector = 'h2:contains("' + sectionName + '") + .btn-wrap .btn:contains("Delete Section")';
+    var client = this.client;
+
     return this.client
+      .execute(function() {
+        // patch for phaantomjs
+        // todo: create compatibility file
+        window.confirm = function(){return true;};
+        window.alert = function(){return true;};
+      })
       .jqueryClick(jqSelector)
-      .acceptAlert();
+      .acceptAlert()
+      .jqueryElement(jqSelector, function(el) { // todo: create assertation for jquery selector
+        this.assert.equal(el, null, 'Element for section "' + sectionName + '" was not found at page');
+      })
+    ;
+  },
+
+  removeGroup: function(groupName) {
+    var jqSelector = 'a[href^="/group"] h4:contains("' + groupName  + '")';
+    var client = this.client;
+
+    return this.client
+      .execute(function() {
+        // patch for phantomjs
+        // todo: create compatibility file
+        window.confirm = function(){return true;};
+        window.alert = function(){return true;};
+      })
+      .jqueryClick(jqSelector)
+      .waitForElementNotPresent('.spinner')
+      .waitForElementPresent('.top-section .btn')
+      .jqueryClick('.top-section .btn:contains("Delete Group")')
+      .acceptAlert()
+      .waitForElementNotPresent('.spinner')
+      .url(function(currentUrl) {
+        this.assert.equal(currentUrl.value, client.globals.urls.HOME_URL, 'After removing group should be redirected into home page');
+      })
+      .jqueryElement(jqSelector, function(el) {
+        if(!!el) {
+          client.saveScreenshot(client.global.path + '/' + groupName + '.png');
+        }
+        this.assert.equal(el, null, 'Element for group "' + groupName + '" was not found at page');
+      })
+    ;
   }
 }
