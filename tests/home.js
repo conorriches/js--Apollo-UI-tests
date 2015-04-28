@@ -11,11 +11,7 @@ module.exports = {
       .page.home.load()
       .page.home.createObject(objectName)
       .page.home.searchObject(objectName)
-      .useXpath()
-      .isVisible('//h2[text()="' + objectName + '"]', function(result) {
-        this.assert.equal(result.value, true);
-      })
-      .useCss()
+      .assert.jqueryExists('h2:contains("' + objectName + '")')
     ;
   },
 
