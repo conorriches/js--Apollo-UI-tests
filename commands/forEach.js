@@ -29,7 +29,7 @@ util.inherits(forEach, events.EventEmitter);
 
 
 forEach.prototype.command = function(collection, iterator, callback) {
-  collection = collection instanceof Array? collection: [];
+  collection = ( collection instanceof Array ) ? collection: [];
   var self = this;
   var counter = 0;
   var count = collection.length;
@@ -39,7 +39,7 @@ forEach.prototype.command = function(collection, iterator, callback) {
     iterator.apply(self.api, arguments)
     .then(function() {
       counter++;
-      self.api.cLog('Iteration #' + counter, collection[counter - 1]);
+      self.api.cLog('forEach iteration #' + counter + " / " + count);
 
       if(counter == count) {
         self.emit('complete');

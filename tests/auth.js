@@ -8,7 +8,7 @@ module.exports = {
       .login(client.globals.credentials.FAKE_LOGIN, client.globals.credentials.FAKE_PASSWORD)
       .assert.jqueryExists('!body.fake')
       .assert.urlMatch(/\/sign-in/)
-      .waitForElementPresent('.error-msg', client.globals.timeouts.WAIT_FOR_CONDITIONAL_TIMEOUT)
+      .waitForElementPresent('.error-msg')
       .assert.elementPresent('.error-msg')
       .assert.containsText('.error-msg', 'doesn\'t match our records')
     ;

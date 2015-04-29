@@ -1,5 +1,7 @@
 var path = require('path');
 var getName = require('../utils/generate-name');
+var util = require('util');
+var _ = require('lodash');
 
 module.exports = {
   tags: ['home'],
@@ -24,7 +26,6 @@ module.exports = {
       ;
   },
 
-
   'Try to add/remove group': function(client) {
     var groupName = getName('Group');
     return client
@@ -32,6 +33,25 @@ module.exports = {
       .page.home.createGroup(groupName)
       .page.home.removeGroup(groupName)
       ;
+  },
+
+  'Remove test or empty groups': function(client) {
+    var groupName = getName('Group');
+    return client
+      .forEach([1,2], function(item) {
+        return this.page.home.createGroup(groupName + item)
+      })
+      .page.home.getSectionsList(function(sections) {
+      var allGroups = _.flatten(_.pluck(sections, 'groups'));
+      var testGroups = _.filter(allGroups, function(group) {
+        return group.title.indexOf('Group_for_') == 0
+      });
+
+      return client.forEach(testGroups, function(item) {
+        return this.page.home.removeGroup(item.title);
+      })
+    })
+    ;
   },
 
   before: function(client) {

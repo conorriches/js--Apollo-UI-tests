@@ -122,11 +122,38 @@ module.exports = {
         this.assert.equal(currentUrl.value, client.globals.urls.HOME_URL, 'After removing group should be redirected into home page');
       })
       .jqueryElement(jqSelector, function(el) {
-        if(!!el) {
-          client.saveScreenshot(client.global.path + '/' + groupName + '.png');
-        }
         this.assert.equal(el, null, 'Element for group "' + groupName + '" was not found at page');
       })
     ;
+  },
+
+  getSectionsList: function(callback) {
+    var self;
+    return this.client
+      .cLog('HomePage.getSectionsList')
+      .execute(function() {
+        var ret = [],
+          section;
+        $('.subtitle').each(function(sectionNum, sectionEl) {
+          $se = $(sectionEl);
+          ret.push(section = {
+            title: $se.find('h2').text(),
+            groups: []
+          });
+
+          $se.next('.row').find('article').each(function(groupNumber, groupEl) {
+            $ge = $(groupEl);
+            section.groups.push({
+              title: $.trim($ge.find('h4').text()),
+              objectsNumber: parseInt($.trim($ge.find('.meta b').text())),
+              id: ($ge.find('a[href^="/group"]').attr('href') || '').replace('/group/', '')
+            });
+          });
+        });
+
+      return ret;
+    }, [], function(result) {
+        callback.call(self, result.value);
+    });
   }
 }

@@ -7,7 +7,7 @@ module.exports = {
       .url(client.globals.urls.SIGN_IN_URL, function() {
         client.deleteCookies();
       })
-      .waitForElementPresent('body', client.globals.timeouts.WAIT_FOR_CONDITIONAL_TIMEOUT)
+      .waitForElementPresent('body')
       .assert.elementPresent('.btn')
       .assert.elementPresent('.login input')
       .assert.elementPresent('.password input')

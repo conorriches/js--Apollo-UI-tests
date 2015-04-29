@@ -9,6 +9,7 @@
   "dependencies": {
     "chalk": "^1.0.0",
     "chromedriver": "^2.15.0",
+    "lodash": "^3.7.0",
     "nightwatch": "^0.6.5",
     "nightwatch-pages": "*",
     "selenium-server-standalone-jar": "^2.45.0"
