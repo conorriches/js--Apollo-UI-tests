@@ -4,7 +4,7 @@
   "custom_commands_path" : "./commands",
   "custom_assertions_path" : "./assertions",
   "globals_path" : "./globals.js",
-
+  "end_session_on_fail": false,
   "selenium" : {
     "start_process" : true,
     "server_path" : "node_modules/selenium-server-standalone-jar/jar/selenium-server-standalone-2.45.0.jar",
