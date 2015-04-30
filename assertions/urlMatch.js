@@ -5,7 +5,7 @@ exports.assertion = function(expected, msg) {
   this.expected = expected;
 
   this.pass = function(value) {
-    if(!(this.expected instanceof  RegExp)){
+    if (!(this.expected instanceof  RegExp)) {
       this.expected = new RegExp(this.expected)
     }
     return this.expected.test(value);

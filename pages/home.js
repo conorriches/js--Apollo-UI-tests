@@ -7,7 +7,7 @@ module.exports = {
     var client = this.client;
     return this.client
       .url(function(currentUrl) {
-        if(currentUrl.value !== client.globals.urls.HOME_URL) {
+        if (currentUrl.value !== client.globals.urls.HOME_URL) {
           return client
             .cLog('HomePage.load()')
             .url(client.globals.urls.HOME_URL)
@@ -16,7 +16,7 @@ module.exports = {
           client.cLog('HomePage already at home page')
         }
       })
-    ;
+      ;
   },
 
   createObject: function(objectName) {
@@ -35,7 +35,7 @@ module.exports = {
       .assert.urlMatch(/objects\/object\/\d+\/description/, "Should be redirected into object page")
       .assert.elementPresent('.info-block-text h2 i')
       .assert.containsText('.info-block-text h2 i', objectName, 'Element for object "' + objectName + '" was found')
-    ;
+      ;
   },
 
   searchObject: function(objectName) {
@@ -49,7 +49,7 @@ module.exports = {
       .keys(enter)
       .pause(500)
       .waitForElementNotPresent('.spinner')
-    ;
+      ;
   },
 
   createSection: function(sectionName) {
@@ -62,7 +62,7 @@ module.exports = {
       .click('.modal-footer .btn-primary')
       .waitForElementNotPresent('.spinner')
       .assert.jqueryExists('h2:contains("' + sectionName + '"):visible')
-    ;
+      ;
   },
 
   createGroup: function(groupName, groupDescription) {
@@ -91,19 +91,23 @@ module.exports = {
       .execute(function() {
         // patch for phaantomjs
         // todo: create compatibility file
-        window.confirm = function(){return true;};
-        window.alert = function(){return true;};
+        window.confirm = function() {
+          return true;
+        };
+        window.alert = function() {
+          return true;
+        };
       })
       .pause(500)
       .jqueryClick(jqSelector)
       .pause(500)
       .acceptAlert()
       .assert.jqueryExists('!' + jqSelector)
-    ;
+      ;
   },
 
   removeGroup: function(groupName) {
-    var jqSelector = 'a[href^="/group"] h4:contains("' + groupName  + '")';
+    var jqSelector = 'a[href^="/group"] h4:contains("' + groupName + '")';
     var client = this.client;
 
     return this.client
@@ -114,8 +118,12 @@ module.exports = {
       .execute(function() {
         // patch for phantomjs
         // todo: create compatibility file
-        window.confirm = function(){return true;};
-        window.alert = function(){return true;};
+        window.confirm = function() {
+          return true;
+        };
+        window.alert = function() {
+          return true;
+        };
       })
       .pause(500) // todo: add waitForToggleElement - to wait while element will be present and then while it be removed
       .jqueryClick('.top-section .btn:contains("Delete Group")')
@@ -128,7 +136,7 @@ module.exports = {
       .jqueryElement(jqSelector, function(el) {
         this.assert.equal(el, null, 'Element for group "' + groupName + '" was not found at page');
       })
-    ;
+      ;
   },
 
   getSectionsList: function(callback) {
@@ -155,9 +163,9 @@ module.exports = {
           });
         });
 
-      return ret;
-    }, [], function(result) {
+        return ret;
+      }, [], function(result) {
         callback.call(self, result.value);
-    });
+      });
   }
 }

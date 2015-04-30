@@ -1,22 +1,22 @@
 {
-  "src_folders" : ["tests"],
-  "output_folder" : "reports",
-  "custom_commands_path" : "./commands",
-  "custom_assertions_path" : "./assertions",
-  "globals_path" : "./globals.js",
+  "src_folders": ["tests"],
+  "output_folder": "reports",
+  "custom_commands_path": "./commands",
+  "custom_assertions_path": "./assertions",
+  "globals_path": "./globals.js",
   "end_session_on_fail": false,
-  "selenium" : {
-    "start_process" : true,
-    "server_path" : "node_modules/selenium-server-standalone-jar/jar/selenium-server-standalone-2.45.0.jar",
-    "log_path" : "",
-    "host" : "127.0.0.1",
-    "port" : 4444,
-    "cli_args" : {
-      "webdriver.chrome.driver" : "node_modules/chromedriver/bin/chromedriver",
-      "phantomjs.cli.args" : "--web-security=false --ignore-ssl-errors=true --load-images=true --local-to-remote-url-access=true --debug=true"
+  "selenium": {
+    "start_process": true,
+    "server_path": "node_modules/selenium-server-standalone-jar/jar/selenium-server-standalone-2.45.0.jar",
+    "log_path": "",
+    "host": "127.0.0.1",
+    "port": 4444,
+    "cli_args": {
+      "webdriver.chrome.driver": "node_modules/chromedriver/bin/chromedriver",
+      "phantomjs.cli.args": "--web-security=false --ignore-ssl-errors=true --load-images=true --local-to-remote-url-access=true --debug=true"
     }
   },
-  "test_settings" : {
+  "test_settings": {
     "default": {
       "launch_url": "http://localhost",
       "selenium_port": 4444,
@@ -26,21 +26,24 @@
         "enabled": false,
         "path": "results/screenshots"
       },
-      "desiredCapabilities" : {
-        "browserName" : "phantomjs",
-        "javascriptEnabled" : true,
-        "acceptSslCerts" : true,
-        "phantomjs.binary.path" : "./bin/osx/phantomjs",
+      "desiredCapabilities": {
+        "browserName": "phantomjs",
+        "javascriptEnabled": true,
+        "acceptSslCerts": true,
+        "phantomjs.binary.path": "./bin/osx/phantomjs",
         "chromeOptions": {
-          "debuggerAddress":  "127.0.0.1:38947"
+          "debuggerAddress": "127.0.0.1:38947"
         }
       }
     },
-    "chrome" : {
+    "chrome": {
       "desiredCapabilities": {
         "browserName": "chrome",
         "chromeOptions": {
-          "args":["disable-web-security", "ignore-certificate-errors"]
+          "args": [
+            "disable-web-security",
+            "ignore-certificate-errors"
+          ]
         }
       }
     }

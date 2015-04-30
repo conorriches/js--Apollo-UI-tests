@@ -3,8 +3,8 @@
  * @type {exports|module.exports}
  * @private
  *
-.assert.elementPresent('.error-msg')
-.forEach([5,6,7,8,9], function(item) {
+ .assert.elementPresent('.error-msg')
+ .forEach([5,6,7,8,9], function(item) {
   // note this = client
   return this
     .url('http://some.url/sign-in#' + item)
@@ -13,7 +13,7 @@
     })
     .pause(15000)
 })
-.then(function() {
+ .then(function() {
     this.assert.containsText('.error-msg', 'doesn\'t match our records')
 })
  */
@@ -29,7 +29,7 @@ util.inherits(forEach, events.EventEmitter);
 
 
 forEach.prototype.command = function(collection, iterator, callback) {
-  collection = ( collection instanceof Array ) ? collection: [];
+  collection = ( collection instanceof Array ) ? collection : [];
   var self = this;
   var counter = 0;
   var count = collection.length;
@@ -37,14 +37,14 @@ forEach.prototype.command = function(collection, iterator, callback) {
   collection.forEach(function() {
     //console.log(util.inspect(self));
     iterator.apply(self.api, arguments)
-    .then(function() {
-      counter++;
-      self.api.cLog('forEach iteration #' + counter + " / " + count);
+      .then(function() {
+        counter++;
+        self.api.cLog('forEach iteration #' + counter + " / " + count);
 
-      if(counter == count) {
-        self.emit('complete');
-      }
-    })
+        if (counter == count) {
+          self.emit('complete');
+        }
+      })
   });
 
   return this;

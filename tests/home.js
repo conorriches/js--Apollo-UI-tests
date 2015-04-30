@@ -14,7 +14,7 @@ module.exports = {
       .page.home.createObject(objectName)
       .page.home.searchObject(objectName)
       .assert.jqueryExists('h2:contains("' + objectName + '")')
-    ;
+      ;
   },
 
   'Try to add/remove section': function(client) {
@@ -38,20 +38,20 @@ module.exports = {
   'Remove test or empty groups': function(client) {
     var groupName = getName('Group');
     return client
-      .forEach([1,2], function(item) {
+      .forEach([1, 2], function(item) {
         return this.page.home.createGroup(groupName + item)
       })
       .page.home.getSectionsList(function(sections) {
-      var allGroups = _.flatten(_.pluck(sections, 'groups'));
-      var testGroups = _.filter(allGroups, function(group) {
-        return group.title.indexOf('Group_for_') == 0
-      });
+        var allGroups = _.flatten(_.pluck(sections, 'groups'));
+        var testGroups = _.filter(allGroups, function(group) {
+          return group.title.indexOf('Group_for_') == 0
+        });
 
-      return client.forEach(testGroups, function(item) {
-        return this.page.home.removeGroup(item.title);
+        return client.forEach(testGroups, function(item) {
+          return this.page.home.removeGroup(item.title);
+        })
       })
-    })
-    ;
+      ;
   },
 
   before: function(client) {
@@ -60,6 +60,6 @@ module.exports = {
     return client.page.auth
       .login(client.globals.credentials.CORRECT_LOGIN, client.globals.credentials.CORRECT_PASSWORD)
       .resizeWindow(1024, 800) // done to get normal creen size with phantomjs screenshots
-    ;
+      ;
   }
 }

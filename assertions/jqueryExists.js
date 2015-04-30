@@ -15,7 +15,7 @@ var execute = function(selector) {
 exports.assertion = function(selector, msg) {
   var defaultMessage;
 
-  if(selector[0] === '!') {
+  if (selector[0] === '!') {
     this.isPositiveTest = false;
     this.selector = selector.replace('!', '');
     defaultMessage = util.format('Testing if the $("%s") is NOT presented at page', this.selector)
@@ -33,7 +33,7 @@ exports.assertion = function(selector, msg) {
 
 
   this.pass = function(value) {
-    return this.isPositiveTest? value > 0 : value == 0;
+    return this.isPositiveTest ? value > 0 : value == 0;
   };
 
   this.value = function(result) {

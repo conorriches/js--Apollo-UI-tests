@@ -1,5 +1,5 @@
 module.exports = {
-  login: function (username, password) {
+  login: function(username, password) {
     var client = this.client;
 
     return this.client
