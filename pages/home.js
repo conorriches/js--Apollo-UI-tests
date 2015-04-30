@@ -94,7 +94,9 @@ module.exports = {
         window.confirm = function(){return true;};
         window.alert = function(){return true;};
       })
+      .pause(500)
       .jqueryClick(jqSelector)
+      .pause(500)
       .acceptAlert()
       .assert.jqueryExists('!' + jqSelector)
     ;
@@ -115,7 +117,9 @@ module.exports = {
         window.confirm = function(){return true;};
         window.alert = function(){return true;};
       })
+      .pause(500) // todo: add waitForToggleElement - to wait while element will be present and then while it be removed
       .jqueryClick('.top-section .btn:contains("Delete Group")')
+      .pause(500)
       .acceptAlert()
       .waitForElementNotPresent('.spinner')
       .url(function(currentUrl) {
