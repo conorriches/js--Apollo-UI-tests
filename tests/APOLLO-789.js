@@ -83,6 +83,17 @@ module.exports = {
       .assert.jqueryExists('.info-block-text h5:contains("' + accession + '")')
       .pause(10000)
     //Move object to another group
+      .jqueryClick('.breadcrumb + .btn-wrap .btn.dropdown-toggle[data-toggle="dropdown"]:contains("Object Actions")')
+      .waitForElementPresent('.breadcrumb + .btn-wrap .btn.dropdown-toggle[data-toggle="dropdown"] + .dropdown-menu li')
+      .jqueryClick('.btn.dropdown-toggle[data-toggle="dropdown"] + .dropdown-menu li a:contains("Copy to Another Group")')
+      .waitForElementPresent('.modal-content')
+      .page.common.setSelect2ValueByLabel('Group', 'Group')
+      .jqueryClick('.modal-footer .btn.btn-primary:contains("Copy")')
+      .waitForElementNotPresent('.spinner')
+      .waitForElementNotPresent('.modal-content')
+      .waitForElementPresent('.group-page')
+      .assert.urlMatch(/\/group\/\d+/, 'Should be redirected to group page')
+      .pause(10000)
     //Delete an object
     //Create a new group
     //Create a smart group based on artist's name
