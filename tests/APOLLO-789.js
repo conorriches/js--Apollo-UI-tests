@@ -52,8 +52,20 @@ module.exports = {
       .jqueryClick('#nav-artifact-images .description a:contains("Use as Cover Image")')
       .moveToElement('.top-section-artifact .info-block', 10, 10)
       .waitForElementNotPresent('#nav-artifact-images .description')
-      .pause(10000)
     //Upload a document
+      .jqueryClick('.pull-tabs a[href*="/documents"]')
+      .jqueryClick('.quotum-1.container-cols .full-width-subtitle .btn:contains("Add")')
+      .waitForElementPresent('.quotum-1 .no-results')
+      .assert.elementPresent('.quotum-1 .no-results', 'Created object has not attachments')
+      .waitForElementPresent('.modal-content')
+      .setValue('.modal-body input.files[type="file"]', image1)
+      .assert.valueContains('.modal-body input.files[type="file"]', 'image1.jpg')
+      .waitForElementNotPresent('.modal-footer .btn.disabled.btn-primary')
+      .click('.modal-footer .btn.btn-primary')
+      .pause(10000)
+      .waitForElementNotPresent('.modal-content')
+      .waitForElementNotPresent('.quotum-1 .no-results')
+      .assert.jqueryExists('.documents-table .ember-table-body-container .ember-table-table-row p:contains("image1.jpg")')
     //Duplicate an object
     //Move object to another group
     //Delete an object
