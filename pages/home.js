@@ -22,6 +22,7 @@ module.exports = {
   createObject: function(objectName) {
     return this.client
       .cLog('HomePage.createObject(' + objectName + ')')
+      .waitForElementPresent(SELECTOR_ADD_OBJECT_BTN)
       .moveToElement(SELECTOR_ADD_OBJECT_BTN, 10, 10)
       .click(SELECTOR_ADD_OBJECT_BTN)
       .assert.elementPresent('.modal-title', 'Should show modal')
