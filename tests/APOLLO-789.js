@@ -7,6 +7,8 @@ module.exports = {
   'APOLLO-789': function(client) {
     var objectName = getName('Object');
     var artist = {firstName: getName('Artist first name'), lastName: getName('Artist last name')};
+    var accession = getName('Accession');
+    var accessionArtist = getName('Accession Artist');
     var image1 = path.resolve(__dirname + '/../files/image1.jpg');
     var image2 = path.resolve(__dirname + '/../files/image2.jpg');
     var image3 = path.resolve(__dirname + '/../files/image3.jpg');
@@ -27,6 +29,7 @@ module.exports = {
       .waitForElementPresent('.accordion-group a[href^="/artist/"][href$="objects"]')
       .assert.jqueryExists('a:contains("' + artist.firstName + '")')
     //Add one image to an object
+      // todo: add switchoff for phantom case ( cause it failed on uploading files
       .jqueryClick('.pull-tabs a[href$="/images"]')
       .waitForElementVisible('button.btn-addbox.btn-addwide')
       .jqueryClick('button.btn-addbox.btn-addwide')
@@ -62,11 +65,23 @@ module.exports = {
       .assert.valueContains('.modal-body input.files[type="file"]', 'image1.jpg')
       .waitForElementNotPresent('.modal-footer .btn.disabled.btn-primary')
       .click('.modal-footer .btn.btn-primary')
-      .pause(10000)
       .waitForElementNotPresent('.modal-content')
       .waitForElementNotPresent('.quotum-1 .no-results')
       .assert.jqueryExists('.documents-table .ember-table-body-container .ember-table-table-row p:contains("image1.jpg")')
     //Duplicate an object
+      .jqueryClick('.breadcrumb + .btn-wrap .btn.dropdown-toggle[data-toggle="dropdown"]:contains("Object Actions")')
+      .waitForElementPresent('.breadcrumb + .btn-wrap .btn.dropdown-toggle[data-toggle="dropdown"] + .dropdown-menu li')
+      .jqueryClick('.btn.dropdown-toggle[data-toggle="dropdown"] + .dropdown-menu li a:contains("Duplicate Object")')
+      .waitForElementPresent('.modal-content')
+      .setValue('input[name=accession_number]', accession)
+      .setValue('input[name=artist_accession_number]', accessionArtist)
+      .jqueryClick('.modal-footer .btn:contains("Duplicate")')
+      .waitForElementNotPresent('.modal-content')
+      .waitForElementNotPresent('.pull-tabs a.active[href*="/documents"]')
+      .waitForElementNotPresent('.spinner')
+      .waitForElementPresent('.info-block-text h5')
+      .assert.jqueryExists('.info-block-text h5:contains("' + accession + '")')
+      .pause(10000)
     //Move object to another group
     //Delete an object
     //Create a new group
