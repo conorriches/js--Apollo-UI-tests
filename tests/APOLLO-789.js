@@ -16,7 +16,6 @@ module.exports = {
     //Create a new object
     return client
       .page.home.createObject(objectName)
-      .pause(2000)
       .waitForElementPresent('.collectable-page')
     //Edit the object's attributes
       .jqueryClick('.subtitle h4:contains("Artists") + div button:contains("Add")')
@@ -69,8 +68,8 @@ module.exports = {
       .waitForElementNotPresent('.quotum-1 .no-results')
       .assert.jqueryExists('.documents-table .ember-table-body-container .ember-table-table-row p:contains("image1.jpg")')
     //Duplicate an object
-      .jqueryClick('.breadcrumb + .btn-wrap .btn.dropdown-toggle[data-toggle="dropdown"]:contains("Object Actions")')
-      .waitForElementPresent('.breadcrumb + .btn-wrap .btn.dropdown-toggle[data-toggle="dropdown"] + .dropdown-menu li')
+      .jqueryClick('.top-section .btn.dropdown-toggle[data-toggle="dropdown"]:contains("Actions")')
+      .waitForElementPresent('.top-section .btn.dropdown-toggle[data-toggle="dropdown"] + .dropdown-menu li')
       .jqueryClick('.btn.dropdown-toggle[data-toggle="dropdown"] + .dropdown-menu li a:contains("Duplicate Object")')
       .waitForElementPresent('.modal-content')
       .setValue('input[name=accession_number]', accession)
@@ -83,8 +82,8 @@ module.exports = {
       .assert.jqueryExists('.info-block-text h5:contains("' + accession + '")')
       .pause(10000)
     //Move object to another group
-      .jqueryClick('.breadcrumb + .btn-wrap .btn.dropdown-toggle[data-toggle="dropdown"]:contains("Object Actions")')
-      .waitForElementPresent('.breadcrumb + .btn-wrap .btn.dropdown-toggle[data-toggle="dropdown"] + .dropdown-menu li')
+      .jqueryClick('.top-section .btn.dropdown-toggle[data-toggle="dropdown"]:contains("Actions")')
+      .waitForElementPresent('.top-section .btn-wrap .btn.dropdown-toggle[data-toggle="dropdown"] + .dropdown-menu li')
       .jqueryClick('.btn.dropdown-toggle[data-toggle="dropdown"] + .dropdown-menu li a:contains("Copy to Another Group")')
       .waitForElementPresent('.modal-content')
       .page.common.setSelect2ValueByLabel('Group', 'Group')
@@ -93,8 +92,20 @@ module.exports = {
       .waitForElementNotPresent('.modal-content')
       .waitForElementPresent('.group-page')
       .assert.urlMatch(/\/group\/\d+/, 'Should be redirected to group page')
-      .pause(10000)
     //Delete an object
+      .page.home.searchObject(objectName)
+      .assert.jqueryExists('!.btn-checkmark.active', 'There should be no checked items')
+      .execute(function(objName) {
+        $('h2.sub-title:contains("' + objName +  '")').parents('.ember-table-table-row').find('.btn-checkmark').click();
+      }, [objectName])
+      .assert.jqueryExists('.btn-checkmark.active', 'There should be checked items')
+      .jqueryClick('.top-section .btn.dropdown-toggle[data-toggle="dropdown"]:contains("Actions")')
+      .waitForElementPresent('.top-section .btn.dropdown-toggle[data-toggle="dropdown"] + .dropdown-menu li')
+      .jqueryClick('.btn.dropdown-toggle[data-toggle="dropdown"] + .dropdown-menu li a:contains("Delete")')
+      .acceptAlert()
+      .waitForElementNotPresent('.ember-table-table-row')
+      .assert.elementPresent('.quotum-1 .no-results')
+      .pause(30000)
     //Create a new group
     //Create a smart group based on artist's name
     //Add tags to multiple objects (Group Actions > Add tags)
