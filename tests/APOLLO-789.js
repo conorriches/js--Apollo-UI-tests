@@ -20,6 +20,7 @@ module.exports = {
     var purchaseInvoiceNumber = getName('Invoice');
     var itemComment = getName('Item comment');
     var addObjectName = 'Obj';
+    var destinationName = 'mus';
 
     //Create a new object
     return client
@@ -268,6 +269,24 @@ module.exports = {
       .acceptAlert()
       .waitForElementNotPresent('.btn-checkmark.active')
       //Add a location change
+      .cLog('Add a location change', 'yellow')
+      .page.home.load()
+      .jqueryClick('a[href^="/group/"] h4:contains("Group_for_vvs_1430652278995")') //todo: use generated group name
+      .waitForElementPresent('.spinner')
+      .waitForElementNotPresent('.spinner')
+      .jqueryClick('.ember-table-table-row .btn-checkmark')
+      .assert.jqueryExists('.btn-checkmark.active', 'There should be checked items')
+      .page.common.runToolbarMenuAction("Add Location Change")
+      .waitForElementPresent('.modal-content')
+      .assert.elementPresent('.modal-title', 'Should show modal')
+      .assert.containsText('.modal-title', 'Add Location Change')
+      .page.common.setSelect2ValueByLabel('Destination Place', destinationName)
+      .jqueryClick('.modal-footer .btn:contains("Save and Continue")')
+      .waitForElementPresent('.spinner')
+      .waitForElementNotPresent('.spinner')
+      .waitForElementNotPresent('.modal-content')
+      .waitForElementPresent('.transaction-page')
+      .assert.urlMatch(/transactions\/location\-change\/\d+/, 'Should be redirected into change location transaction page')
       //Add a new location
       //Delete a location
       //Add 6 levels of sublocation to a location
