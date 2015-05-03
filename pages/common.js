@@ -21,5 +21,27 @@ module.exports = {
       .waitForElementPresent('.top-section .btn.dropdown-toggle[data-toggle="dropdown"] + .dropdown-menu li')
       .jqueryClick('.btn.dropdown-toggle[data-toggle="dropdown"] + .dropdown-menu li a:contains("' + actionName + '")')
     ;
+  },
+
+  addFilter: function(fieldName, fieldValue) {
+    return this.client
+      .jqueryClick('.top-section .toolbar .btn:contains("Filter")')
+      .waitForElementPresent('.filter-section')
+      .jqueryClick('.filter-section .btn:contains("Add filter")')
+      .waitForElementPresent('.filter-options-i')
+      .jqueryClick('.filters-list label:contains("' + fieldName + '"):first')
+      .waitForElementNotPresent('.filter-options-i')
+      .jqueryClick('.filter-item .fa.fa-sort-down:last')
+      .waitForElementVisible('.filter-options-i')
+      .page.common.setSelect2ValueByLabel('', 'contains', '.filter-options-i')
+      .waitForElementPresent('.filter-options-i input[placeholder="Search"]')
+      .setValue('.filter-options-i input[placeholder="Search"]', fieldValue)
+      .jqueryClick('.filter-options-i .btn:contains("Update")')
+      .waitForElementNotPresent('.filter-options-i')
+      .jqueryClick('.filter-section .apply-btn .btn:contains("Apply")')
+      .waitForElementNotPresent('.filter-section')
+      .waitForElementPresent('.spinner')
+      .waitForElementNotPresent('.spinner')
+    ;
   }
 }
