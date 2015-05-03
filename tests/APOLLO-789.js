@@ -6,7 +6,7 @@ module.exports = {
 
   'APOLLO-789': function(client) {
     var objectName = getName('Object');
-    var artist = {firstName: getName('Artist first name'), lastName: getName('Artist last name')};
+    var artist = { firstName: getName('Artist first name'), lastName: getName('Artist last name') };
     var accession = getName('Accession');
     var accessionArtist = getName('Accession Artist');
     var image1 = path.resolve(__dirname + '/../files/image1.jpg');
@@ -16,10 +16,12 @@ module.exports = {
 
     //Create a new object
     return client
-/*      .page.home.createObject(objectName)
-      .waitForElementPresent('.collectable-page')*/
-    //Edit the object's attributes
-/*      .jqueryClick('.subtitle h4:contains("Artists") + div button:contains("Add")')
+      .cLog('Create new object', 'yellow')
+      .page.home.createObject(objectName)
+      .waitForElementPresent('.collectable-page')
+      //Edit the object's attributes
+      .cLog('Edit the object\'s attributes', 'yellow')
+      .jqueryClick('.subtitle h4:contains("Artists") + div button:contains("Add")')
       .jqueryClick('.artist-select .btn.btn-menu') // Add new artist
       .waitForElementPresent('input[name="first_name"]')
       .setValue('input[name="first_name"]', artist.firstName)
@@ -27,10 +29,11 @@ module.exports = {
       .jqueryClick('.artist-select .btn.btn-primary:contains("Create")')
       .waitForElementNotPresent('input[name="first_name"]')
       .waitForElementPresent('.accordion-group a[href^="/artist/"][href$="/objects"]')
-      .assert.jqueryExists('a:contains("' + artist.firstName + '")') */
-    //Add one image to an object
+      .assert.jqueryExists('a:contains("' + artist.firstName + '")')
+      //Add one image to an object
       // todo: add switchoff for phantom case ( cause it failed on uploading files
-/*      .jqueryClick('.pull-tabs a[href$="/images"]')
+      .cLog('Add one image to an object', 'yellow')
+      .jqueryClick('.pull-tabs a[href$="/images"]')
       .waitForElementVisible('button.btn-addbox.btn-addwide')
       .jqueryClick('button.btn-addbox.btn-addwide')
       .waitForElementPresent('.modal-content')
@@ -38,9 +41,10 @@ module.exports = {
       .assert.valueContains('.modal-body input.files[type="file"]', 'image1.jpg')
       .waitForElementNotPresent('.modal-footer .btn.disabled.btn-primary')
       .click('.modal-footer .btn.btn-primary')
-      .waitForElementNotPresent('.modal-content')*/
-    //Add multiple images to an object
-/*      .click('.actions .add-image')
+      .waitForElementNotPresent('.modal-content')
+      //Add multiple images to an object
+      .cLog('Add multiple images to an object', 'yellow')
+      .click('.actions .add-image')
       .waitForElementPresent('.modal-content')
       .setValue('.modal-body input.files[type="file"]', image2)
       .assert.valueContains('.modal-body input.files[type="file"]', 'image2.jpg')
@@ -48,15 +52,17 @@ module.exports = {
       .assert.valueContains('.modal-body input.files[type="file"]', 'image3.jpg')
       .waitForElementNotPresent('.modal-footer .btn.disabled.btn-primary')
       .click('.modal-footer .btn.btn-primary')
-      .waitForElementNotPresent('.modal-content')*/
-    //Set a cover image for an object
-/*      .moveToElement('#nav-artifact-images .images .image:nth-child(2) .image-component img', 5, 5)
+      .waitForElementNotPresent('.modal-content')
+      //Set a cover image for an object
+      .cLog('Set a cover image for an object', 'yellow')
+      .moveToElement('#nav-artifact-images .images .image:nth-child(2) .image-component img', 5, 5)
       .waitForElementVisible('#nav-artifact-images .description')
       .jqueryClick('#nav-artifact-images .description a:contains("Use as Cover Image")')
       .moveToElement('.top-section-artifact .info-block', 10, 10)
-      .waitForElementNotPresent('#nav-artifact-images .description')*/
-    //Upload a document
-/*      .jqueryClick('.pull-tabs a[href*="/documents"]')
+      .waitForElementNotPresent('#nav-artifact-images .description')
+      //Upload a document
+      .cLog('Upload a document', 'yellow')
+      .jqueryClick('.pull-tabs a[href*="/documents"]')
       .jqueryClick('.quotum-1.container-cols .full-width-subtitle .btn:contains("Add")')
       .waitForElementPresent('.quotum-1 .no-results')
       .assert.elementPresent('.quotum-1 .no-results', 'Created object has not attachments')
@@ -67,9 +73,10 @@ module.exports = {
       .click('.modal-footer .btn.btn-primary')
       .waitForElementNotPresent('.modal-content')
       .waitForElementNotPresent('.quotum-1 .no-results')
-      .assert.jqueryExists('.documents-table .ember-table-body-container .ember-table-table-row p:contains("image1.jpg")')*/
-    //Duplicate an object
-/*      .jqueryClick('.top-section .btn.dropdown-toggle[data-toggle="dropdown"]:contains("Actions")')
+      .assert.jqueryExists('.documents-table .ember-table-body-container .ember-table-table-row p:contains("image1.jpg")')
+      //Duplicate an object
+      .cLog('Duplicate an object', 'yellow')
+      .jqueryClick('.top-section .btn.dropdown-toggle[data-toggle="dropdown"]:contains("Actions")')
       .waitForElementPresent('.top-section .btn.dropdown-toggle[data-toggle="dropdown"] + .dropdown-menu li')
       .jqueryClick('.btn.dropdown-toggle[data-toggle="dropdown"] + .dropdown-menu li a:contains("Duplicate Object")')
       .waitForElementPresent('.modal-content')
@@ -80,9 +87,10 @@ module.exports = {
       .waitForElementNotPresent('.pull-tabs a.active[href*="/documents"]')
       .waitForElementNotPresent('.spinner')
       .waitForElementPresent('.info-block-text h5')
-      .assert.jqueryExists('.info-block-text h5:contains("' + accession + '")')*/
-    //Move object to another group
-/*      .jqueryClick('.top-section .btn.dropdown-toggle[data-toggle="dropdown"]:contains("Actions")')
+      .assert.jqueryExists('.info-block-text h5:contains("' + accession + '")')
+      //Move object to another group
+      .cLog('Move object to another group', 'yellow')
+      .jqueryClick('.top-section .btn.dropdown-toggle[data-toggle="dropdown"]:contains("Actions")')
       .waitForElementPresent('.top-section .btn-wrap .btn.dropdown-toggle[data-toggle="dropdown"] + .dropdown-menu li')
       .jqueryClick('.btn.dropdown-toggle[data-toggle="dropdown"] + .dropdown-menu li a:contains("Copy to Another Group")')
       .waitForElementPresent('.modal-content')
@@ -91,12 +99,13 @@ module.exports = {
       .waitForElementNotPresent('.spinner')
       .waitForElementNotPresent('.modal-content')
       .waitForElementPresent('.group-page')
-      .assert.urlMatch(/\/group\/\d+/, 'Should be redirected to group page')*/
-    //Delete an object
-/*      .page.home.searchObject(objectName)
+      .assert.urlMatch(/\/group\/\d+/, 'Should be redirected to group page')
+      //Delete an object
+      .cLog('Delete an object', 'yellow')
+      .page.home.searchObject(objectName)
       .assert.jqueryExists('!.btn-checkmark.active', 'There should be no checked items')
       .execute(function(objName) {
-        $('h2.sub-title:contains("' + objName +  '")').parents('.ember-table-table-row').find('.btn-checkmark').click();
+        $('h2.sub-title:contains("' + objName + '")').parents('.ember-table-table-row').find('.btn-checkmark').click();
       }, [objectName])
       .assert.jqueryExists('.btn-checkmark.active', 'There should be checked items')
       .jqueryClick('.top-section .btn.dropdown-toggle[data-toggle="dropdown"]:contains("Actions")')
@@ -104,8 +113,9 @@ module.exports = {
       .jqueryClick('.btn.dropdown-toggle[data-toggle="dropdown"] + .dropdown-menu li a:contains("Delete")')
       .acceptAlert()
       .waitForElementNotPresent('.ember-table-table-row')
-      .assert.elementPresent('.quotum-1 .no-results')*/
-    //Create a new group
+      .assert.elementPresent('.quotum-1 .no-results')
+      //Create a new group
+      .cLog('Create a new group', 'yellow')
       .page.home.load()
       .page.home.createGroup(groupName)
       .jqueryClick('a[href^="/group"] h4:contains("' + groupName + '")')
@@ -113,23 +123,24 @@ module.exports = {
       .waitForElementNotPresent('.spinner')
       .waitForElementPresent('.top-section .btn')
       //Set a cover image for a group
+      .cLog('Set a cover image for a group', 'yellow')
       .page.group.createObject(objectName)
       .jqueryClick('.pull-tabs a[href$="/images"]')
-     .waitForElementVisible('button.btn-addbox.btn-addwide')
-     .jqueryClick('button.btn-addbox.btn-addwide')
-     .waitForElementPresent('.modal-content')
-     .setValue('.modal-body input.files[type="file"]', image1)
-     .assert.valueContains('.modal-body input.files[type="file"]', 'image1.jpg')
-     .waitForElementNotPresent('.modal-footer .btn.disabled.btn-primary')
-     .click('.modal-footer .btn.btn-primary')
-     .waitForElementNotPresent('.modal-content')
+      .waitForElementVisible('button.btn-addbox.btn-addwide')
+      .jqueryClick('button.btn-addbox.btn-addwide')
+      .waitForElementPresent('.modal-content')
+      .setValue('.modal-body input.files[type="file"]', image1)
+      .assert.valueContains('.modal-body input.files[type="file"]', 'image1.jpg')
+      .waitForElementNotPresent('.modal-footer .btn.disabled.btn-primary')
+      .click('.modal-footer .btn.btn-primary')
+      .waitForElementNotPresent('.modal-content')
       .click('.top-section .breadcrumb li:first-of-type a')
       .waitForElementPresent('.spinner')
       .waitForElementNotPresent('.spinner')
       .assert.urlMatch(/group\/\d+/, 'Breadcrumb should redirect to group page')
       .assert.jqueryExists('!.btn-checkmark.active', 'There should be no checked items')
       .execute(function(objName) {
-        $('h2.sub-title:contains("' + objName +  '")').parents('.ember-table-table-row').find('.btn-checkmark').first().click();
+        $('h2.sub-title:contains("' + objName + '")').parents('.ember-table-table-row').find('.btn-checkmark').first().click();
       }, [objectName])
       .assert.jqueryExists('.btn-checkmark.active', 'There should be checked items')
       .jqueryClick('.top-section .btn.dropdown-toggle[data-toggle="dropdown"]:contains("Actions")')
@@ -144,11 +155,11 @@ module.exports = {
         // no-imagae setted with data-url
         this.assert.equal(result.value, 1, 'Group should have cover image');
       })
-      .pause(30000)
-    //Create a smart group based on artist's name //todo: please describe steps
-    //Add tags to multiple objects (Group Actions > Add tags)
-    //Sort object table view (artist name / title / date modified) (use All Objects)
-/*      .moveToElement('#sidebar', 5, 5)
+      //Create a smart group based on artist's name //todo: please describe steps
+      //Add tags to multiple objects (Group Actions > Add tags)
+      //Sort object table view (artist name / title / date modified) (use All Objects)
+      .cLog('Sort object table view (artist name / title / date modified) (use All Objects)', 'yellow')
+      .moveToElement('#sidebar', 5, 5)
       .jqueryClick('#sidebar .sidebar-section-handle:contains("Objects")')
       .waitForElementVisible('.sidebar-section a.icon-objects + ul.nav-pills')
       .assert.jqueryExists('.sidebar-section-content-item a:contains("All Objects")')
@@ -168,28 +179,28 @@ module.exports = {
       .jqueryClick('.ember-table-header-container .sorter:contains("Date")')
       .waitForElementNotPresent('.spinner')
       .assert.elementPresent('.ember-table-table-row')
-      .assert.jqueryExists('.ember-table-header-container .sorter.ascending:contains("Date"), .ember-table-header-container .sorter.descending:contains("Date")')*/
-    //Add a new purchase transaction
-    //Edit contacts in a purchase transaction
-    //Edit values for objects in a purchase transaction
-    //Add a new object to a purchase transaction
-    //Remove an object from a purchase transaction
-    //Add a location change
-    //Add a new location
-    //Delete a location
-    //Add 6 levels of sublocation to a location
-    //Generate a full inventory report
-    //Generate an inventory report with a selection of objects
-    //Add a new artist
-    //Delete an artist
-    //Add a new contact
-    //Delete a contact
-    //Save User settings / Account settings
-    //Save a new password
-    //Add a user via Multi-Access tab
-    //Switch from one account to another via the sidebar
-    //Search for an object
-    ;
+      .assert.jqueryExists('.ember-table-header-container .sorter.ascending:contains("Date"), .ember-table-header-container .sorter.descending:contains("Date")')
+      //Add a new purchase transaction
+      //Edit contacts in a purchase transaction
+      //Edit values for objects in a purchase transaction
+      //Add a new object to a purchase transaction
+      //Remove an object from a purchase transaction
+      //Add a location change
+      //Add a new location
+      //Delete a location
+      //Add 6 levels of sublocation to a location
+      //Generate a full inventory report
+      //Generate an inventory report with a selection of objects
+      //Add a new artist
+      //Delete an artist
+      //Add a new contact
+      //Delete a contact
+      //Save User settings / Account settings
+      //Save a new password
+      //Add a user via Multi-Access tab
+      //Switch from one account to another via the sidebar
+      //Search for an object
+      ;
   },
 
   before: function(client) {
