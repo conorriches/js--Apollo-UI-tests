@@ -13,10 +13,15 @@ module.exports = {
     var image2 = path.resolve(__dirname + '/../files/image2.jpg');
     var image3 = path.resolve(__dirname + '/../files/image3.jpg');
     var groupName = getName('Group');
+    var buyerName = "Museum"; // todo: create users and other for test cases
+    var sellerName = "Gallery";
+    var newBuyerName = 'New';
+    var newSellerName = 'Sommer';
+    var purchaseInvoiceNumber = getName('Invoice');
 
     //Create a new object
     return client
-      .cLog('Create new object', 'yellow')
+/*      .cLog('Create new object', 'yellow')
       .page.home.createObject(objectName)
       .waitForElementPresent('.collectable-page')
       //Edit the object's attributes
@@ -179,9 +184,42 @@ module.exports = {
       .jqueryClick('.ember-table-header-container .sorter:contains("Date")')
       .waitForElementNotPresent('.spinner')
       .assert.elementPresent('.ember-table-table-row')
-      .assert.jqueryExists('.ember-table-header-container .sorter.ascending:contains("Date"), .ember-table-header-container .sorter.descending:contains("Date")')
+      .assert.jqueryExists('.ember-table-header-container .sorter.ascending:contains("Date"), .ember-table-header-container .sorter.descending:contains("Date")')*/
       //Add a new purchase transaction
+      .cLog('Add a new purchase transaction', 'yellow')
+      .page.home.load()
+      .jqueryClick('a[href^="/group/"] h4:contains("Group_for_vvs_1430652278995")')
+      .waitForElementPresent('.spinner')
+      .waitForElementNotPresent('.spinner')
+      .jqueryClick('.ember-table-table-row .btn-checkmark')
+      .assert.jqueryExists('.btn-checkmark.active', 'There should be checked items')
+      .page.common.runToolbarMenuAction("Add Purchase")
+      .waitForElementPresent('.modal-content')
+      .assert.elementPresent('.modal-title', 'Should show modal')
+      .assert.containsText('.modal-title', 'Add Purchase')
+      .page.common.setSelect2ValueByLabel('Buyer', buyerName)
+      .page.common.setSelect2ValueByLabel('Seller', sellerName)
+      .setValue('input[name="invoice_number"]', purchaseInvoiceNumber)
+      .jqueryClick('.modal-footer .btn:contains("Save and Continue")')
+      .waitForElementPresent('.spinner')
+      .waitForElementNotPresent('.spinner')
+      .waitForElementNotPresent('.modal-content')
+      .waitForElementPresent('.transaction-page')
+      .assert.urlMatch(/transactions\/invoice\/\d+/, 'Should be redirected into purchase transaction page')
       //Edit contacts in a purchase transaction
+      .cLog('Edit contacts in a purchase transaction', 'yellow')
+      .jqueryClick('.nav-tabs a:contains("Details")')
+      .waitForElementPresent('.invoice_info')
+      .assert.jqueryExists('.nav-tabs a.active:contains("Details")', 'Details tab should be active')
+      .jqueryClick('.contacts h4:contains("Contacts") + * .btn:contains("Edit")')
+      .waitForElementPresent('.modal-content')
+      .assert.containsText('.modal-title', 'Contacts')
+      .page.common.setSelect2ValueByLabel('Buyer', newBuyerName)
+      .page.common.setSelect2ValueByLabel('Seller', newSellerName)
+      .jqueryClick('.modal-footer .btn:contains("Save")')
+      .waitForElementNotPresent('.modal-content')
+      .assert.jqueryExists('.contacts a:contains("' + newBuyerName  +'")')
+      .assert.jqueryExists('.contacts a:contains("' + newSellerName  +'")')
       //Edit values for objects in a purchase transaction
       //Add a new object to a purchase transaction
       //Remove an object from a purchase transaction
