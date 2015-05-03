@@ -21,6 +21,9 @@ module.exports = {
     var itemComment = getName('Item comment');
     var addObjectName = 'Obj';
     var destinationName = 'mus';
+    var newLocationName = getName('Location');
+    var newLocationStreet = 'Кедышко';
+    var locationCount;
 
     //Create a new object
     return client
@@ -187,7 +190,7 @@ module.exports = {
       .jqueryClick('.ember-table-header-container .sorter:contains("Date")')
       .waitForElementNotPresent('.spinner')
       .assert.elementPresent('.ember-table-table-row')
-      .assert.jqueryExists('.ember-table-header-container .sorter.ascending:contains("Date"), .ember-table-header-container .sorter.descending:contains("Date")')*/
+      .assert.jqueryExists('.ember-table-header-container .sorter.ascending:contains("Date"), .ember-table-header-container .sorter.descending:contains("Date")')
       //Add a new purchase transaction
       .cLog('Add a new purchase transaction', 'yellow')
       .page.home.load()
@@ -286,8 +289,42 @@ module.exports = {
       .waitForElementNotPresent('.spinner')
       .waitForElementNotPresent('.modal-content')
       .waitForElementPresent('.transaction-page')
-      .assert.urlMatch(/transactions\/location\-change\/\d+/, 'Should be redirected into change location transaction page')
+      .assert.urlMatch(/transactions\/location\-change\/\d+/, 'Should be redirected into change location transaction page')*/
       //Add a new location
+      .cLog('Add a new location', 'yellow')
+      .moveToElement('#sidebar', 5, 5)
+      .jqueryClick('#sidebar .sidebar-section-handle:contains("Locations")')
+      .waitForElementPresent('.leaflet-tile-container')
+      .waitForElementPresent('.nums')
+      .execute(function() {
+        return parseInt($('.load-more .nums').text().split('/').pop().trim());
+      }, [], function(result)  {
+        locationCount = result.value;
+      })
+      .jqueryClick('.toolbar .btn:contains("Add location")')
+      .waitForElementPresent('.modal-content')
+      .assert.containsText('.modal-title', 'Add location')
+      .assert.jqueryExists('.modal-footer .btn.disabled:contains("Save")')
+      .setValue('.modal-body .title input', newLocationName)
+      .moveToElement('input[placeholder="Please Enter Address"]', 5, 5)
+      .click('input[placeholder="Please Enter Address"]')
+      .setValue('input[placeholder="Please Enter Address"]', newLocationStreet)
+      .waitForElementVisible('.pac-matched')
+      .click('.pac-matched')
+      .waitForElementNotVisible('.pac-matched')
+      .setValue('.textarea[contenteditable=true]', itemComment)
+      .assert.jqueryExists('!.modal-footer .btn.disabled:contains("Save")', 'After entering location data "Save" button should be enabled')
+      .assert.valueContains('.modal-body .street_name input', newLocationStreet, 'Should get street from address')
+      .jqueryClick('.modal-footer .btn:contains("Save")')
+      .waitForElementPresent('.spinner')
+      .waitForElementNotPresent('.spinner')
+      .waitForElementNotPresent('.modal-content')
+      .pause(1000)
+      .execute(function() {
+        return parseInt($('.load-more .nums').text().split('/').pop().trim());
+      }, [], function(result)  {
+        return client.assert.equal(locationCount + 1, result.value, 'Adding location should increase counter');
+      })
       //Delete a location
       //Add 6 levels of sublocation to a location
       //Generate a full inventory report
