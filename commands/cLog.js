@@ -17,11 +17,19 @@
 var chalk = require('chalk');
 var infoSymbol = String.fromCharCode('9432');
 
-var log = function(message, callback) {
+var log = function(message, color, callback) {
   var browser = this;
+  var msg;
+  if(arguments.length < 2) {
+    callback = color;
+    msg = chalk.blue.bold(infoSymbol) + '  ' + message;
+  } else {
+    msg = chalk.blue.bold(infoSymbol) + '  ' + (chalk.yellow || chalk.white)(message);
+  }
+
 
   browser.perform(function() {
-    console.log(chalk.blue.bold(infoSymbol) + '  ' + message);
+    console.log(msg);
   });
 
   if (typeof callback === 'function') {
