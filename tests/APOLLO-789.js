@@ -19,6 +19,7 @@ module.exports = {
     var newSellerName = 'Sommer';
     var purchaseInvoiceNumber = getName('Invoice');
     var itemComment = getName('Item comment');
+    var addObjectName = 'Obj';
 
     //Create a new object
     return client
@@ -240,7 +241,32 @@ module.exports = {
       .waitForElementNotPresent('.spinner')
       .assert.jqueryExists('.cell-content .shortened:contains("' + itemComment + '")')
       //Add a new object to a purchase transaction
+      .cLog('Add a new object to a purchase transaction', 'yellow')
+      .jqueryClick('.full-width-subtitle .btn:contains("Add Object")')
+      .waitForElementPresent('.modal-content')
+      .assert.containsText('.modal-title', 'Add Item')
+      .page.common.setSelect2ValueByLabel('', addObjectName, '.modal-body')
+      .jqueryClick('.modal-footer .btn:contains("Add")')
+      .waitForElementPresent('.spinner')
+      .waitForElementNotPresent('.spinner')
+      .assert.jqueryExists('.btn.btn-checkmark:not(".active")', 'Nearly added object isn\'t selected')
+      .assert.jqueryExists('.btn.btn-checkmark.active', 'Previously edited item is still selected')
       //Remove an object from a purchase transaction
+      .cLog('Remove an object from a purchase transaction', 'yellow')
+      .execute(function(objName) {
+        // add class to mark original item
+        $('.ember-table-table-row .btn-checkmark.active').addClass('save-on-remove').click();
+      })
+      .assert.jqueryExists('!.btn-checkmark.active', 'There should be no checked items')
+      .execute(function(objName) {
+        $('.ember-table-table-row .btn-checkmark:not(.save-on-remove)').click();
+      })
+      .assert.jqueryExists('.btn-checkmark.active', 'There should be checked items')
+      .jqueryClick('.full-width-subtitle .btn:contains("Actions")')
+      .waitForElementVisible('.full-width-subtitle .btn + .dropdown-menu')
+      .jqueryClick('.full-width-subtitle .btn + .dropdown-menu li a:contains("Delete")')
+      .acceptAlert()
+      .waitForElementNotPresent('.btn-checkmark.active')
       //Add a location change
       //Add a new location
       //Delete a location
