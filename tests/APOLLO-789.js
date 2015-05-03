@@ -106,12 +106,49 @@ module.exports = {
       .waitForElementNotPresent('.ember-table-table-row')
       .assert.elementPresent('.quotum-1 .no-results')*/
     //Create a new group
-/*      .page.home.load()
-      .page.createGroup(groupName)*/
+      .page.home.load()
+      .page.home.createGroup(groupName)
+      .jqueryClick('a[href^="/group"] h4:contains("' + groupName + '")')
+      .waitForElementPresent('.spinner')
+      .waitForElementNotPresent('.spinner')
+      .waitForElementPresent('.top-section .btn')
+      //Set a cover image for a group
+      .page.group.createObject(objectName)
+      .jqueryClick('.pull-tabs a[href$="/images"]')
+     .waitForElementVisible('button.btn-addbox.btn-addwide')
+     .jqueryClick('button.btn-addbox.btn-addwide')
+     .waitForElementPresent('.modal-content')
+     .setValue('.modal-body input.files[type="file"]', image1)
+     .assert.valueContains('.modal-body input.files[type="file"]', 'image1.jpg')
+     .waitForElementNotPresent('.modal-footer .btn.disabled.btn-primary')
+     .click('.modal-footer .btn.btn-primary')
+     .waitForElementNotPresent('.modal-content')
+      .click('.top-section .breadcrumb li:first-of-type a')
+      .waitForElementPresent('.spinner')
+      .waitForElementNotPresent('.spinner')
+      .assert.urlMatch(/group\/\d+/, 'Breadcrumb should redirect to group page')
+      .assert.jqueryExists('!.btn-checkmark.active', 'There should be no checked items')
+      .execute(function(objName) {
+        $('h2.sub-title:contains("' + objName +  '")').parents('.ember-table-table-row').find('.btn-checkmark').first().click();
+      }, [objectName])
+      .assert.jqueryExists('.btn-checkmark.active', 'There should be checked items')
+      .jqueryClick('.top-section .btn.dropdown-toggle[data-toggle="dropdown"]:contains("Actions")')
+      .waitForElementPresent('.top-section .btn.dropdown-toggle[data-toggle="dropdown"] + .dropdown-menu li')
+      .jqueryClick('.btn.dropdown-toggle[data-toggle="dropdown"] + .dropdown-menu li a:contains("Use As Group Cover Image")')
+      .waitForElementPresent('.spinner')
+      .waitForElementNotPresent('.spinner')
+      .page.home.load()
+      .execute(function(groupName) {
+        return $('h4:contains("' + groupName + '")').parents('[data-sort-id]').find('img[src^="http"]').length;
+      }, [groupName], function(result) {
+        // no-imagae setted with data-url
+        this.assert.equal(result.value, 1, 'Group should have cover image');
+      })
+      .pause(30000)
     //Create a smart group based on artist's name //todo: please describe steps
     //Add tags to multiple objects (Group Actions > Add tags)
     //Sort object table view (artist name / title / date modified) (use All Objects)
-      .moveToElement('#sidebar', 5, 5)
+/*      .moveToElement('#sidebar', 5, 5)
       .jqueryClick('#sidebar .sidebar-section-handle:contains("Objects")')
       .waitForElementVisible('.sidebar-section a.icon-objects + ul.nav-pills')
       .assert.jqueryExists('.sidebar-section-content-item a:contains("All Objects")')
@@ -131,8 +168,7 @@ module.exports = {
       .jqueryClick('.ember-table-header-container .sorter:contains("Date")')
       .waitForElementNotPresent('.spinner')
       .assert.elementPresent('.ember-table-table-row')
-      .assert.jqueryExists('.ember-table-header-container .sorter.ascending:contains("Date"), .ember-table-header-container .sorter.descending:contains("Date")')
-    //Set a cover image for a group
+      .assert.jqueryExists('.ember-table-header-container .sorter.ascending:contains("Date"), .ember-table-header-container .sorter.descending:contains("Date")')*/
     //Add a new purchase transaction
     //Edit contacts in a purchase transaction
     //Edit values for objects in a purchase transaction
