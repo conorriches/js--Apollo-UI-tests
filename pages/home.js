@@ -92,14 +92,11 @@ module.exports = {
       .execute(function() {
         // patch for phaantomjs
         // todo: create compatibility file
-        window.confirm = function() {
-          return true;
-        };
-        window.alert = function() {
-          return true;
-        };
+        window.confirm = function() { return true; };
+        window.alert = function() { return true; };
       })
       .pause(500)
+      .acceptAlert()
       .jqueryClick(jqSelector)
       .pause(500)
       .acceptAlert()
