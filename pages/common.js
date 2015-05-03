@@ -1,10 +1,14 @@
 module.exports = {
-  'setSelect2ValueByLabel': function(label, value) {
+  'setSelect2ValueByLabel': function(label, value, customSelector) {
     return this.client
-      .execute(function(name, val) {
-        $('.form-group label:contains("' + name + '")').first().next().find('.select2-choice').mousedown();
+      .execute(function(name, val, customSelector) {
+        if(name && !customSelector) {
+          $('.form-group label:contains("' + name + '")').first().next().find('.select2-choice').mousedown();
+        } else if(customSelector) {
+          $(customSelector).find('.select2-choice').mousedown();
+        }
         $('.select2-search input').val(val).trigger('input')
-      }, [label, value])
+      }, [label, value, customSelector])
       .waitForElementNotPresent('.select2-searching')
       .click('.select2-results li:first-of-type .select2-result-label')
       .waitForElementNotPresent('.select2-results li')
