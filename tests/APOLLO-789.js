@@ -27,7 +27,7 @@ module.exports = {
 
     //Create a new object
     return client
-/*      .cLog('Create new object', 'yellow')
+      .cLog('Create new object', 'yellow')
       .page.home.createObject(objectName)
       .waitForElementPresent('.collectable-page')
       //Edit the object's attributes
@@ -289,13 +289,13 @@ module.exports = {
       .waitForElementNotPresent('.spinner')
       .waitForElementNotPresent('.modal-content')
       .waitForElementPresent('.transaction-page')
-      .assert.urlMatch(/transactions\/location\-change\/\d+/, 'Should be redirected into change location transaction page')*/
+      .assert.urlMatch(/transactions\/location\-change\/\d+/, 'Should be redirected into change location transaction page')
       //Add a new location
       .cLog('Add a new location', 'yellow')
       .moveToElement('#sidebar', 5, 5)
       .jqueryClick('#sidebar .sidebar-section-handle:contains("Locations")')
       .waitForElementPresent('.leaflet-tile-container')
-      .waitForElementPresent('.nums')
+      .waitForElementPresent('.nums') //todo: wrap into helper
       .execute(function() {
         return parseInt($('.load-more .nums').text().split('/').pop().trim());
       }, [], function(result)  {
@@ -360,6 +360,18 @@ module.exports = {
         return client.assert.equal(sublocationCount, 6, 'There should be 6 sublocations');
       })
       //Delete a location
+      .cLog('Delete a location', 'yellow')
+      .moveToElement('#sidebar', 5, 5)
+      .jqueryClick('#sidebar .sidebar-section-handle:contains("Locations")')
+      .waitForElementPresent('.leaflet-tile-container')
+      .page.common.addFilter('Name', newLocationName)
+      .jqueryClick('.btn-checkmark')
+      .jqueryClick('.top-section .btn.dropdown-toggle[data-toggle="dropdown"]:contains("Actions")')
+      .waitForElementPresent('.top-section .btn.dropdown-toggle[data-toggle="dropdown"] + .dropdown-menu li')
+      .jqueryClick('.btn.dropdown-toggle[data-toggle="dropdown"] + .dropdown-menu li a:contains("Delete")')
+      .acceptAlert()
+      .waitForElementNotPresent('.ember-table-table-row')
+      .assert.elementPresent('.quotum-1 .no-results')
       //Generate a full inventory report
       //Generate an inventory report with a selection of objects
       //Add a new artist

@@ -11,7 +11,7 @@ module.exports = {
       }, [label, value, customSelector])
       .waitForElementNotPresent('.select2-searching')
       .click('.select2-results li:first-of-type .select2-result-label')
-      .waitForElementNotPresent('.select2-results li')
+      .waitForElementNotPresent('.select2-results li:first-of-type .select2-result-label')
     ;
   },
 
