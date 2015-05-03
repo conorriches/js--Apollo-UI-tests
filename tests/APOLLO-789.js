@@ -23,7 +23,7 @@ module.exports = {
     var destinationName = 'mus';
     var newLocationName = getName('Location');
     var newLocationStreet = 'Кедышко';
-    var locationCount;
+    var locationCount, sublocationCount;
 
     //Create a new object
     return client
@@ -319,14 +319,64 @@ module.exports = {
       .waitForElementPresent('.spinner')
       .waitForElementNotPresent('.spinner')
       .waitForElementNotPresent('.modal-content')
-      .pause(1000)
       .execute(function() {
         return parseInt($('.load-more .nums').text().split('/').pop().trim());
       }, [], function(result)  {
         return client.assert.equal(locationCount + 1, result.value, 'Adding location should increase counter');
       })
-      //Delete a location
       //Add 6 levels of sublocation to a location
+      .cLog('Add 6 levels of sublocation to a location', 'yellow')
+      // todo: wrap filter operations into tool helpers
+      .jqueryClick('.top-section .toolbar .btn:contains("Filter")')
+      .waitForElementPresent('.filter-section')
+      .jqueryClick('.filter-section .btn:contains("Add filter")')
+      .waitForElementPresent('.filter-options-i')
+      .jqueryClick('.filters-list label:contains("Name"):first')
+      .waitForElementNotPresent('.filter-options-i')
+      .jqueryClick('.filter-item .fa.fa-sort-down:last')
+      .waitForElementVisible('.filter-options-i')
+      .page.common.setSelect2ValueByLabel('', 'contains', '.filter-options-i')
+      .waitForElementPresent('.filter-options-i input[placeholder="Search"]')
+      .setValue('.filter-options-i input[placeholder="Search"]', newLocationName)
+      .jqueryClick('.filter-options-i .btn:contains("Update")')
+      .waitForElementNotPresent('.filter-options-i')
+      .jqueryClick('.filter-section .apply-btn .btn:contains("Apply")')
+      .waitForElementNotPresent('.filter-section')
+      .waitForElementPresent('.spinner')
+      .waitForElementNotPresent('.spinner')
+      .assert.jqueryExists('.ember-table-cell .title:contains("' + newLocationName + '")')
+      .click('.ember-table-cell .title')
+      .waitForElementPresent('.location-page')
+      .assert.urlMatch(/location\/\d+/, 'Should be redirected into location page')
+      .execute(function() {
+        return parseInt($('.full-width-subtitle .group-info b').text().trim());
+      }, [], function(result) {
+        sublocationCount = result.value;
+        return client.assert.equal(sublocationCount, 0, 'There should be no sublocations');
+      })
+      .forEach([1, 2, 3, 4, 5, 6], function(item) {
+        var sublocationName = getName('SubLocation#' + item);
+        return client
+          .jqueryClick('.full-width-subtitle .btn:contains("Add Sublocation")')
+          .waitForElementPresent('.modal-content')
+          .setValue('.modal-body input[name="title"]', sublocationName)
+          .jqueryClick('.modal-footer .btn:contains("Save")')
+          .waitForElementNotPresent('.modal-content')
+          .pause(500)
+          .jqueryClick('.ember-table-table-row:contains("' + sublocationName + '") .btn-checkmark')
+          .execute(function(){
+            return $('.btn-checkmark.active').length;
+          },[], function(result) {
+            return client.assert.equal(result.value, 1, 'Should be checked only one sublocation');
+          })
+      })
+      .execute(function() {
+        return parseInt($('.full-width-subtitle .group-info b').text().trim());
+      }, [], function(result) {
+        sublocationCount = result.value;
+        return client.assert.equal(sublocationCount, 6, 'There should be 6 sublocations');
+      })
+      //Delete a location
       //Generate a full inventory report
       //Generate an inventory report with a selection of objects
       //Add a new artist
