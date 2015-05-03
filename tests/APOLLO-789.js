@@ -18,6 +18,7 @@ module.exports = {
     var newBuyerName = 'New';
     var newSellerName = 'Sommer';
     var purchaseInvoiceNumber = getName('Invoice');
+    var itemComment = getName('Item comment');
 
     //Create a new object
     return client
@@ -188,7 +189,7 @@ module.exports = {
       //Add a new purchase transaction
       .cLog('Add a new purchase transaction', 'yellow')
       .page.home.load()
-      .jqueryClick('a[href^="/group/"] h4:contains("Group_for_vvs_1430652278995")')
+      .jqueryClick('a[href^="/group/"] h4:contains("Group_for_vvs_1430652278995")') //todo: use generated group name
       .waitForElementPresent('.spinner')
       .waitForElementNotPresent('.spinner')
       .jqueryClick('.ember-table-table-row .btn-checkmark')
@@ -221,6 +222,23 @@ module.exports = {
       .assert.jqueryExists('.contacts a:contains("' + newBuyerName  +'")')
       .assert.jqueryExists('.contacts a:contains("' + newSellerName  +'")')
       //Edit values for objects in a purchase transaction
+      .cLog('Edit values for objects in a purchase transaction', 'yellow')
+      .jqueryClick('.nav-tabs a:contains("Objects")')
+      .waitForElementPresent('.spinner')
+      .waitForElementNotPresent('.spinner')
+      .waitForElementPresent('.ember-table-table-row')
+      .jqueryClick('.ember-table-table-row .btn-checkmark')
+      .assert.jqueryExists('.btn-checkmark.active', 'There should be checked items')
+      .jqueryClick('.full-width-subtitle .btn:contains("Actions")')
+      .waitForElementVisible('.full-width-subtitle .btn + .dropdown-menu')
+      .jqueryClick('.full-width-subtitle .btn + .dropdown-menu li a:contains("Edit")')
+      .waitForElementPresent('.modal-content')
+      .assert.containsText('.modal-title', 'Edit item')
+      .setValue('.textarea[contenteditable=true]', itemComment)
+      .jqueryClick('.modal-footer .btn:contains("Save")')
+      .waitForElementPresent('.spinner')
+      .waitForElementNotPresent('.spinner')
+      .assert.jqueryExists('.cell-content .shortened:contains("' + itemComment + '")')
       //Add a new object to a purchase transaction
       //Remove an object from a purchase transaction
       //Add a location change
