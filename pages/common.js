@@ -1,6 +1,7 @@
 module.exports = {
   'setSelect2ValueByLabel': function(label, value, customSelector) {
     return this.client
+      .cLog('Set select2 "'+ (label || customSelector) +  '" value to "' + value + '"')
       .execute(function(name, val, customSelector) {
         if(name && !customSelector) {
           $('.form-group label:contains("' + name + '")').first().next().find('.select2-choice').mousedown();
@@ -17,6 +18,7 @@ module.exports = {
 
   'runToolbarMenuAction': function(actionName) {
     return this.client
+      .cLog('Run toolbar menu action "' + actionName + '"')
       .jqueryClick('.top-section .btn.dropdown-toggle[data-toggle="dropdown"]:contains("Actions")')
       .waitForElementPresent('.top-section .btn.dropdown-toggle[data-toggle="dropdown"] + .dropdown-menu li')
       .jqueryClick('.btn.dropdown-toggle[data-toggle="dropdown"] + .dropdown-menu li a:contains("' + actionName + '")')
@@ -25,6 +27,7 @@ module.exports = {
 
   addFilter: function(fieldName, fieldValue) {
     return this.client
+      .cLog('Add filter where "' + fieldName + '" is "' + fieldValue + '"')
       .jqueryClick('.top-section .toolbar .btn:contains("Filter")')
       .waitForElementPresent('.filter-section')
       .jqueryClick('.filter-section .btn:contains("Add filter")')
