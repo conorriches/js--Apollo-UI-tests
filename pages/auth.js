@@ -18,6 +18,7 @@ module.exports = {
       .click('.btn')
       .pause(1000)
       .waitForElementNotPresent('.spinner')
+      .waitForElementPresent('.global-container')
   },
 };
 
