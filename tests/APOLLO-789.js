@@ -23,11 +23,13 @@ module.exports = {
     var destinationName = 'mus';
     var newLocationName = getName('Location');
     var newLocationStreet = 'Кедышко';
-    var locationCount, sublocationCount;
+    var artistName = 'Bott';
+    var listerCount;
+
 
     //Create a new object
     return client
-      .cLog('Create new object', 'yellow')
+      /*.cLog('Create new object', 'yellow')
       .page.home.createObject(objectName)
       .waitForElementPresent('.collectable-page')
       //Edit the object's attributes
@@ -299,7 +301,7 @@ module.exports = {
       .execute(function() {
         return parseInt($('.load-more .nums').text().split('/').pop().trim());
       }, [], function(result)  {
-        locationCount = result.value;
+        listerCount = result.value;
       })
       .jqueryClick('.toolbar .btn:contains("Add location")')
       .waitForElementPresent('.modal-content')
@@ -322,7 +324,7 @@ module.exports = {
       .execute(function() {
         return parseInt($('.load-more .nums').text().split('/').pop().trim());
       }, [], function(result)  {
-        return client.assert.equal(locationCount + 1, result.value, 'Adding location should increase counter');
+        return client.assert.equal(listerCount + 1, result.value, 'Adding location should increase counter');
       })
       //Add 6 levels of sublocation to a location
       .cLog('Add 6 levels of sublocation to a location', 'yellow')
@@ -334,8 +336,8 @@ module.exports = {
       .execute(function() {
         return parseInt($('.full-width-subtitle .group-info b').text().trim());
       }, [], function(result) {
-        sublocationCount = result.value;
-        return client.assert.equal(sublocationCount, 0, 'There should be no sublocations');
+        listerCount = result.value;
+        return client.assert.equal(listerCount, 0, 'There should be no sublocations');
       })
       .forEach([1, 2, 3, 4, 5, 6], function(item) {
         var sublocationName = getName('SubLocation#' + item);
@@ -356,8 +358,8 @@ module.exports = {
       .execute(function() {
         return parseInt($('.full-width-subtitle .group-info b').text().trim());
       }, [], function(result) {
-        sublocationCount = result.value;
-        return client.assert.equal(sublocationCount, 6, 'There should be 6 sublocations');
+        listerCount = result.value;
+        return client.assert.equal(listerCount, 6, 'There should be 6 sublocations');
       })
       //Delete a location
       .cLog('Delete a location', 'yellow')
@@ -371,10 +373,34 @@ module.exports = {
       .jqueryClick('.btn.dropdown-toggle[data-toggle="dropdown"] + .dropdown-menu li a:contains("Delete")')
       .acceptAlert()
       .waitForElementNotPresent('.ember-table-table-row')
-      .assert.elementPresent('.quotum-1 .no-results')
+      .assert.elementPresent('.quotum-1 .no-results')*/
       //Generate a full inventory report
+      //todo: clarify details
       //Generate an inventory report with a selection of objects
+      // todo
       //Add a new artist
+      .cLog('Add a new artist', 'yellow')
+      .moveToElement('#sidebar', 5, 5)
+      .jqueryClick('#sidebar .sidebar-section-handle:contains("Artists")')
+      .waitForElementPresent('.artists-page')
+      .waitForElementPresent('.nums') //todo: wrap into helper
+      .execute(function() {
+        return parseInt($('.load-more .nums').text().split('/').pop().trim());
+      }, [], function(result)  {
+        listerCount = result.value;
+      })
+      .jqueryClick('.toolbar .btn:contains("Add Artist")')
+      .waitForElementPresent('.modal-content')
+      .assert.containsText('.modal-title', 'Create Artist')
+      .page.common.setSelect2ValueByLabel('Artist', artistName)
+      .waitForElementNotPresent('.modal-footer .btn.disabled.btn-primary')
+      .jqueryClick('.modal-footer .btn:contains("Create Artist")')
+      .waitForElementNotPresent('.modal-content')
+      .execute(function() {
+        return parseInt($('.load-more .nums').text().split('/').pop().trim());
+      }, [], function(result)  {
+        return client.assert.equal(listerCount + 1, result.value, 'Adding artist should increase counter');
+      })
       //Delete an artist
       //Add a new contact
       //Delete a contact
