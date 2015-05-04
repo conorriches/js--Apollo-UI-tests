@@ -1,35 +1,34 @@
 var path = require('path');
 var getName = require('../utils/generate-name');
 
+var objectName = getName('Object');
+var artist = { firstName: getName('Artist first name'), lastName: getName('Artist last name') };
+var accession = getName('Accession');
+var accessionArtist = getName('Accession Artist');
+var image1 = path.resolve(__dirname + '/../files/image1.jpg');
+var image2 = path.resolve(__dirname + '/../files/image2.jpg');
+var image3 = path.resolve(__dirname + '/../files/image3.jpg');
+var groupName = getName('Group');
+var buyerName = "Museum"; // todo: create users and other for test cases
+var sellerName = "Gallery";
+var newBuyerName = 'New';
+var newSellerName = 'Sommer';
+var purchaseInvoiceNumber = getName('Invoice');
+var itemComment = getName('Item comment');
+var addObjectName = 'Obj';
+var destinationName = 'mus';
+var newLocationName = getName('Location');
+var newLocationStreet = 'Кедышко';
+var newArtistName = 'Stony C';
+var listerCount;
+
 module.exports = {
   tags: ['home'],
 
   'APOLLO-789': function(client) {
-    var objectName = getName('Object');
-    var artist = { firstName: getName('Artist first name'), lastName: getName('Artist last name') };
-    var accession = getName('Accession');
-    var accessionArtist = getName('Accession Artist');
-    var image1 = path.resolve(__dirname + '/../files/image1.jpg');
-    var image2 = path.resolve(__dirname + '/../files/image2.jpg');
-    var image3 = path.resolve(__dirname + '/../files/image3.jpg');
-    var groupName = getName('Group');
-    var buyerName = "Museum"; // todo: create users and other for test cases
-    var sellerName = "Gallery";
-    var newBuyerName = 'New';
-    var newSellerName = 'Sommer';
-    var purchaseInvoiceNumber = getName('Invoice');
-    var itemComment = getName('Item comment');
-    var addObjectName = 'Obj';
-    var destinationName = 'mus';
-    var newLocationName = getName('Location');
-    var newLocationStreet = 'Кедышко';
-    var artistName = 'Bott';
-    var listerCount;
-
-
     //Create a new object
     return client
-      /*.cLog('Create new object', 'yellow')
+      .cLog('Create new object', 'yellow')
       .page.home.createObject(objectName)
       .waitForElementPresent('.collectable-page')
       //Edit the object's attributes
@@ -373,7 +372,7 @@ module.exports = {
       .jqueryClick('.btn.dropdown-toggle[data-toggle="dropdown"] + .dropdown-menu li a:contains("Delete")')
       .acceptAlert()
       .waitForElementNotPresent('.ember-table-table-row')
-      .assert.elementPresent('.quotum-1 .no-results')*/
+      .assert.elementPresent('.quotum-1 .no-results')
       //Generate a full inventory report
       //todo: clarify details
       //Generate an inventory report with a selection of objects
@@ -392,7 +391,7 @@ module.exports = {
       .jqueryClick('.toolbar .btn:contains("Add Artist")')
       .waitForElementPresent('.modal-content')
       .assert.containsText('.modal-title', 'Create Artist')
-      .page.common.setSelect2ValueByLabel('Artist', artistName)
+      .page.common.setSelect2ValueByLabel('Artist', newArtistName)
       .waitForElementNotPresent('.modal-footer .btn.disabled.btn-primary')
       .jqueryClick('.modal-footer .btn:contains("Create Artist")')
       .waitForElementNotPresent('.modal-content')
@@ -402,6 +401,22 @@ module.exports = {
         return client.assert.equal(listerCount + 1, result.value, 'Adding artist should increase counter');
       })
       //Delete an artist
+      .cLog('Delete an artist', 'yellow')
+      .page.common.addFilter('Name', newArtistName) //note: this step depends from "Edit the object's attributes"
+      .execute(function() {
+        return parseInt($('.load-more .nums').text().split('/').pop().trim());
+      }, [], function(result)  {
+        return client.assert.equal(result.value > 0, true, 'Their should be at least one artist which was created on previous step')
+      })
+      // on test cases there are several items but .jqueryClick use only first
+      .execute(function() {$('.ember-table-table-row .btn-checkmark').click(); })
+      .assert.jqueryExists('.btn-checkmark.active', 'There should be checked items')
+      .jqueryClick('.top-section .btn.dropdown-toggle[data-toggle="dropdown"]:contains("Actions")')
+      .waitForElementPresent('.top-section .btn.dropdown-toggle[data-toggle="dropdown"] + .dropdown-menu li')
+      .jqueryClick('.btn.dropdown-toggle[data-toggle="dropdown"] + .dropdown-menu li a:contains("Delete")')
+      .acceptAlert()
+      .waitForElementNotPresent('.ember-table-table-row')
+      .assert.elementPresent('.quotum-1 .no-results')
       //Add a new contact
       //Delete a contact
       //Save User settings / Account settings
@@ -417,7 +432,7 @@ module.exports = {
 
     return client.page.auth
       .login(client.globals.credentials.CORRECT_LOGIN, client.globals.credentials.CORRECT_PASSWORD)
-      .resizeWindow(1024, 800) // done to get normal creen size with phantomjs screenshots
+      //.resizeWindow(1024, 800) // done to get normal creen size with phantomjs screenshots
       ;
   }
 }
