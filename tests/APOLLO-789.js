@@ -322,7 +322,8 @@ module.exports = {
       .setValue('.modal-body .title input', newLocationName)
       .moveToElement('input[placeholder="Please Enter Address"]', 5, 5)
       .click('input[placeholder="Please Enter Address"]')
-      .setValue('input[placeholder="Please Enter Address"]', newLocationStreet)
+      .keys(newLocationStreet.split(""))
+      .click('input[placeholder="Please Enter Address"]')
       .waitForElementVisible('.pac-matched')
       .click('.pac-matched')
       .waitForElementNotVisible('.pac-matched')
@@ -459,7 +460,7 @@ module.exports = {
 
     return client.page.auth
       .login(client.globals.credentials.CORRECT_LOGIN, client.globals.credentials.CORRECT_PASSWORD)
-      .resizeWindow(1024, 800) // done to get normal creen size with phantomjs screenshots
+      .resizeWindow(1280, 1024) // done to get normal creen size with phantomjs screenshots
       ;
   }
 }
