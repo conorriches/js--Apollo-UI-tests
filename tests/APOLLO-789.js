@@ -25,10 +25,8 @@ var listerCount;
 module.exports = {
   tags: ['home'],
 
-  'APOLLO-789': function(client) {
-    //Create a new object
+  'Create new object': function(client) {
     return client
-      .cLog('Create new object', 'yellow')
       .page.home.createObject(objectName)
       .waitForElementPresent('.collectable-page')
       //Edit the object's attributes
@@ -42,9 +40,10 @@ module.exports = {
       .waitForElementNotPresent('input[name="first_name"]')
       .waitForElementPresent('.accordion-group a[href^="/artist/"][href$="/objects"]')
       .assert.jqueryExists('a:contains("' + artist.firstName + '")')
-      //Add one image to an object
-      // todo: add switchoff for phantom case ( cause it failed on uploading files
-      .cLog('Add one image to an object', 'yellow')
+  },
+  'Add one image to an object': function(client) {
+    // todo: add switchoff for phantom case ( cause it failed on uploading files
+    return client
       .jqueryClick('.pull-tabs a[href$="/images"]')
       .waitForElementVisible('button.btn-addbox.btn-addwide')
       .jqueryClick('button.btn-addbox.btn-addwide')
@@ -54,8 +53,9 @@ module.exports = {
       .waitForElementNotPresent('.modal-footer .btn.disabled.btn-primary')
       .click('.modal-footer .btn.btn-primary')
       .waitForElementNotPresent('.modal-content')
-      //Add multiple images to an object
-      .cLog('Add multiple images to an object', 'yellow')
+  },
+  'Add multiple images to an object': function(client) {
+    return client
       .click('.actions .add-image')
       .waitForElementPresent('.modal-content')
       .setValue('.modal-body input.files[type="file"]', image2)
@@ -65,15 +65,17 @@ module.exports = {
       .waitForElementNotPresent('.modal-footer .btn.disabled.btn-primary')
       .click('.modal-footer .btn.btn-primary')
       .waitForElementNotPresent('.modal-content')
-      //Set a cover image for an object
-      .cLog('Set a cover image for an object', 'yellow')
+  },
+  'Set a cover image for an object': function(client) {
+    return client
       .moveToElement('#nav-artifact-images .images .image:nth-child(2) .image-component img', 5, 5)
       .waitForElementVisible('#nav-artifact-images .description')
       .jqueryClick('#nav-artifact-images .description a:contains("Use as Cover Image")')
       .moveToElement('.top-section-artifact .info-block', 10, 10)
       .waitForElementNotPresent('#nav-artifact-images .description')
-      //Upload a document
-      .cLog('Upload a document', 'yellow')
+  },
+  'Upload a document': function(client) {
+    return client
       .jqueryClick('.pull-tabs a[href*="/documents"]')
       .jqueryClick('.quotum-1.container-cols .full-width-subtitle .btn:contains("Add")')
       .waitForElementPresent('.quotum-1 .no-results')
@@ -86,8 +88,9 @@ module.exports = {
       .waitForElementNotPresent('.modal-content')
       .waitForElementNotPresent('.quotum-1 .no-results')
       .assert.jqueryExists('.documents-table .ember-table-body-container .ember-table-table-row p:contains("image1.jpg")')
-      //Duplicate an object
-      .cLog('Duplicate an object', 'yellow')
+  },
+  'Duplicate an object': function(client) {
+    return client
       .jqueryClick('.top-section .btn.dropdown-toggle[data-toggle="dropdown"]:contains("Actions")')
       .waitForElementPresent('.top-section .btn.dropdown-toggle[data-toggle="dropdown"] + .dropdown-menu li')
       .jqueryClick('.btn.dropdown-toggle[data-toggle="dropdown"] + .dropdown-menu li a:contains("Duplicate Object")')
@@ -100,8 +103,9 @@ module.exports = {
       .waitForElementNotPresent('.spinner')
       .waitForElementPresent('.info-block-text h5')
       .assert.jqueryExists('.info-block-text h5:contains("' + accession + '")')
-      //Move object to another group
-      .cLog('Move object to another group', 'yellow')
+  },
+  'Move object to another group': function(client) {
+    return client
       .jqueryClick('.top-section .btn.dropdown-toggle[data-toggle="dropdown"]:contains("Actions")')
       .waitForElementPresent('.top-section .btn-wrap .btn.dropdown-toggle[data-toggle="dropdown"] + .dropdown-menu li')
       .jqueryClick('.btn.dropdown-toggle[data-toggle="dropdown"] + .dropdown-menu li a:contains("Copy to Another Group")')
@@ -112,8 +116,9 @@ module.exports = {
       .waitForElementNotPresent('.modal-content')
       .waitForElementPresent('.group-page')
       .assert.urlMatch(/\/group\/\d+/, 'Should be redirected to group page')
-      //Delete an object
-      .cLog('Delete an object', 'yellow')
+  },
+  'Delete an object': function(client) {
+    return client
       .page.home.searchObject(objectName)
       .assert.jqueryExists('!.btn-checkmark.active', 'There should be no checked items')
       .execute(function(objName) {
@@ -126,16 +131,18 @@ module.exports = {
       .acceptAlert()
       .waitForElementNotPresent('.ember-table-table-row')
       .assert.elementPresent('.quotum-1 .no-results')
-      //Create a new group
-      .cLog('Create a new group', 'yellow')
+  },
+  'Create a new group': function(client) {
+    return client
       .page.home.load()
       .page.home.createGroup(groupName)
       .jqueryClick('a[href^="/group"] h4:contains("' + groupName + '")')
       .waitForElementPresent('.spinner')
       .waitForElementNotPresent('.spinner')
       .waitForElementPresent('.top-section .btn')
-      //Set a cover image for a group
-      .cLog('Set a cover image for a group', 'yellow')
+  },
+  'Set a cover image for a group': function(client) {
+    return client
       .page.group.createObject(objectName)
       .jqueryClick('.pull-tabs a[href$="/images"]')
       .waitForElementVisible('button.btn-addbox.btn-addwide')
@@ -167,10 +174,9 @@ module.exports = {
         // no-imagae setted with data-url
         this.assert.equal(result.value, 1, 'Group should have cover image');
       })
-      //Create a smart group based on artist's name //todo: please describe steps
-      //Add tags to multiple objects (Group Actions > Add tags)
-      //Sort object table view (artist name / title / date modified) (use All Objects)
-      .cLog('Sort object table view (artist name / title / date modified) (use All Objects)', 'yellow')
+  },
+  'Sort object table view (artist name / title / date modified) (use All Objects)': function(client) {
+    return client
       .moveToElement('#sidebar', 5, 5)
       .jqueryClick('#sidebar .sidebar-section-handle:contains("Objects")')
       .waitForElementVisible('.sidebar-section a.icon-objects + ul.nav-pills')
@@ -192,8 +198,9 @@ module.exports = {
       .waitForElementNotPresent('.spinner')
       .assert.elementPresent('.ember-table-table-row')
       .assert.jqueryExists('.ember-table-header-container .sorter.ascending:contains("Date"), .ember-table-header-container .sorter.descending:contains("Date")')
-      //Add a new purchase transaction
-      .cLog('Add a new purchase transaction', 'yellow')
+  },
+  'Add a new purchase transaction': function(client) {
+    return client
       .page.home.load()
       .jqueryClick('a[href^="/group/"] h4:contains("Group_for_vvs_1430652278995")') //todo: use generated group name
       .waitForElementPresent('.spinner')
@@ -213,8 +220,9 @@ module.exports = {
       .waitForElementNotPresent('.modal-content')
       .waitForElementPresent('.transaction-page')
       .assert.urlMatch(/transactions\/invoice\/\d+/, 'Should be redirected into purchase transaction page')
-      //Edit contacts in a purchase transaction
-      .cLog('Edit contacts in a purchase transaction', 'yellow')
+  },
+  'Edit contacts in a purchase transaction': function(client) {
+    return client
       .jqueryClick('.nav-tabs a:contains("Details")')
       .waitForElementPresent('.invoice_info')
       .assert.jqueryExists('.nav-tabs a.active:contains("Details")', 'Details tab should be active')
@@ -227,8 +235,9 @@ module.exports = {
       .waitForElementNotPresent('.modal-content')
       .assert.jqueryExists('.contacts a:contains("' + newBuyerName  +'")')
       .assert.jqueryExists('.contacts a:contains("' + newSellerName  +'")')
-      //Edit values for objects in a purchase transaction
-      .cLog('Edit values for objects in a purchase transaction', 'yellow')
+  },
+  'Edit values for objects in a purchase transaction': function(client) {
+    return client
       .jqueryClick('.nav-tabs a:contains("Objects")')
       .waitForElementPresent('.spinner')
       .waitForElementNotPresent('.spinner')
@@ -245,8 +254,9 @@ module.exports = {
       .waitForElementPresent('.spinner')
       .waitForElementNotPresent('.spinner')
       .assert.jqueryExists('.cell-content .shortened:contains("' + itemComment + '")')
-      //Add a new object to a purchase transaction
-      .cLog('Add a new object to a purchase transaction', 'yellow')
+  },
+  'Add a new object to a purchase transaction': function(client) {
+    return client
       .jqueryClick('.full-width-subtitle .btn:contains("Add Object")')
       .waitForElementPresent('.modal-content')
       .assert.containsText('.modal-title', 'Add Item')
@@ -256,8 +266,9 @@ module.exports = {
       .waitForElementNotPresent('.spinner')
       .assert.jqueryExists('.btn.btn-checkmark:not(".active")', 'Nearly added object isn\'t selected')
       .assert.jqueryExists('.btn.btn-checkmark.active', 'Previously edited item is still selected')
-      //Remove an object from a purchase transaction
-      .cLog('Remove an object from a purchase transaction', 'yellow')
+  },
+  'Remove an object from a purchase transaction': function(client) {
+    return client
       .execute(function(objName) {
         // add class to mark original item
         $('.ember-table-table-row .btn-checkmark.active').addClass('save-on-remove').click();
@@ -272,8 +283,9 @@ module.exports = {
       .jqueryClick('.full-width-subtitle .btn + .dropdown-menu li a:contains("Delete")')
       .acceptAlert()
       .waitForElementNotPresent('.btn-checkmark.active')
-      //Add a location change
-      .cLog('Add a location change', 'yellow')
+  },
+  'Add a location change': function(client) {
+    return client
       .page.home.load()
       .jqueryClick('a[href^="/group/"] h4:contains("Group_for_vvs_1430652278995")') //todo: use generated group name
       .waitForElementPresent('.spinner')
@@ -291,8 +303,9 @@ module.exports = {
       .waitForElementNotPresent('.modal-content')
       .waitForElementPresent('.transaction-page')
       .assert.urlMatch(/transactions\/location\-change\/\d+/, 'Should be redirected into change location transaction page')
-      //Add a new location
-      .cLog('Add a new location', 'yellow')
+  },
+  'Add a new location': function(client) {
+    return client
       .moveToElement('#sidebar', 5, 5)
       .jqueryClick('#sidebar .sidebar-section-handle:contains("Locations")')
       .waitForElementPresent('.leaflet-tile-container')
@@ -325,8 +338,9 @@ module.exports = {
       }, [], function(result)  {
         return client.assert.equal(listerCount + 1, result.value, 'Adding location should increase counter');
       })
-      //Add 6 levels of sublocation to a location
-      .cLog('Add 6 levels of sublocation to a location', 'yellow')
+  },
+  'Add 6 levels of sublocation to a location': function(client) {
+    return client
       .page.common.addFilter('Name', newLocationName)
       .assert.jqueryExists('.ember-table-cell .title:contains("' + newLocationName + '")')
       .click('.ember-table-cell .title')
@@ -348,6 +362,7 @@ module.exports = {
           .waitForElementNotPresent('.modal-content')
           .pause(500)
           .jqueryClick('.ember-table-table-row:contains("' + sublocationName + '") .btn-checkmark')
+          .pause(500)
           .execute(function(){
             return $('.btn-checkmark.active').length;
           },[], function(result) {
@@ -360,8 +375,9 @@ module.exports = {
         listerCount = result.value;
         return client.assert.equal(listerCount, 6, 'There should be 6 sublocations');
       })
-      //Delete a location
-      .cLog('Delete a location', 'yellow')
+  },
+  'Delete a location': function(client) {
+    return client
       .moveToElement('#sidebar', 5, 5)
       .jqueryClick('#sidebar .sidebar-section-handle:contains("Locations")')
       .waitForElementPresent('.leaflet-tile-container')
@@ -373,12 +389,9 @@ module.exports = {
       .acceptAlert()
       .waitForElementNotPresent('.ember-table-table-row')
       .assert.elementPresent('.quotum-1 .no-results')
-      //Generate a full inventory report
-      //todo: clarify details
-      //Generate an inventory report with a selection of objects
-      // todo
-      //Add a new artist
-      .cLog('Add a new artist', 'yellow')
+  },
+  'Add a new artist': function(client) {
+    return client
       .moveToElement('#sidebar', 5, 5)
       .jqueryClick('#sidebar .sidebar-section-handle:contains("Artists")')
       .waitForElementPresent('.artists-page')
@@ -400,8 +413,9 @@ module.exports = {
       }, [], function(result)  {
         return client.assert.equal(listerCount + 1, result.value, 'Adding artist should increase counter');
       })
-      //Delete an artist
-      .cLog('Delete an artist', 'yellow')
+  },
+  'Delete an artist': function(client) {
+    return client
       .page.common.addFilter('Name', newArtistName) //note: this step depends from "Edit the object's attributes"
       .execute(function() {
         return parseInt($('.load-more .nums').text().split('/').pop().trim());
@@ -417,6 +431,19 @@ module.exports = {
       .acceptAlert()
       .waitForElementNotPresent('.ember-table-table-row')
       .assert.elementPresent('.quotum-1 .no-results')
+  },
+
+  'APOLLO-789': function(client) {
+    return client
+      //Create a smart group based on artist's name //todo: please describe steps
+      //Add tags to multiple objects (Group Actions > Add tags)
+      //Sort object table view (artist name / title / date modified) (use All Objects)
+
+      //Generate a full inventory report
+      //todo: clarify details
+      //Generate an inventory report with a selection of objects
+      // todo
+
       //Add a new contact
       //Delete a contact
       //Save User settings / Account settings
@@ -432,7 +459,7 @@ module.exports = {
 
     return client.page.auth
       .login(client.globals.credentials.CORRECT_LOGIN, client.globals.credentials.CORRECT_PASSWORD)
-      //.resizeWindow(1024, 800) // done to get normal creen size with phantomjs screenshots
+      .resizeWindow(1024, 800) // done to get normal creen size with phantomjs screenshots
       ;
   }
 }
