@@ -1,6 +1,7 @@
 var SELECTOR_ADD_OBJECT_BTN = '.top-section-home .btn.btn-primary';
 var SELECTOR_ADD_OBJECT_FORM_TITLE = '.modal-content .title input[name=title]';
 var SELECTOR_MODAL_SUBMIT_BTN = '.modal-footer .btn.btn-primary';
+var SELECTOR_HOME_BTN = 'a.navbar-brand[href="/"]';
 
 module.exports = {
   load: function() {
@@ -10,8 +11,15 @@ module.exports = {
         if (currentUrl.value !== client.globals.urls.HOME_URL) {
           return client
             .cLog('HomePage.load()')
-            .url(client.globals.urls.HOME_URL)
-            .waitForElementNotPresent('.spinner');
+            .execute(function(selector) {
+              return $(selector).length;
+            }, [SELECTOR_HOME_BTN], function(result) {
+              if(result.value) {
+                return client.click(SELECTOR_HOME_BTN).waitForElementNotPresent('.spinner');
+              } else {
+                return client.url(client.globals.urls.HOME_URL).waitForElementNotPresent('.spinner');
+              }
+            })
         } else {
           client.cLog('HomePage already at home page')
         }
